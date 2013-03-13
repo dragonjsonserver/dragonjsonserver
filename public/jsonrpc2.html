@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+        <script src="js/dragonjsonclient.client.js" type="text/javascript"></script>
+        <script src="js/dragonjsonclient.request.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var serverurl = document.URL.substr(0, document.URL.length - 5) + '.php';
+            var client = new DragonJsonClient.Client(serverurl);
+            var request = new DragonJsonClient.Request(
+                'Application.getApplication',
+                {},
+                function (result) {
+                    $.each(result, function (key, value) {
+                        var element = $('#' + key);
+                        if (element) {
+                            element.text(value);
+                        }
+                    });
+                }
+            );
+            client.send(request);
+        </script>
+    </head>
+    <body>
+		Name: <span id="name"></span><br/>
+		Version: <span id="version"></span><br/>
+		Copyright: <span id="copyright"></span>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<?php
+/**
+ * @link http://dragonjsonserver.de/
+ * @copyright Copyright (c) 2012-2013 DragonProjects (http://dragonprojects.de/)
+ * @license http://license.dragonprojects.de/dragonjsonserver.txt New BSD License
+ * @author Christoph Herrmann <developer@dragonprojects.de>
+ * @package DragonJsonServer
+ */
+
+namespace DragonJsonServer;
+
+use DragonJsonServer\Exception,
+    Zend\Json\Server\Client as ZendClient;
+
+/**
+ * Erweiterte Klasse für einen JsonRPC Client
+ */
+class Client extends ZendClient
+{
+    /**
+     * Macht einen Request zum Server und gibt das Ergebnis zurück
+     * @param string $method
+     * @param array $params
+     * @return mixed
+     * @throws Exception
+     */
+    public function call($method, $params = array())
+    {
+        $response = $this->doRequest($this->createRequest($method, $params));
+        if ($response->isError()) {
+            $error = $response->getError();
+            throw new Exception($error->getMessage(), $error->getCode(), $error->getData());
+        }
+        return $response->getResult();
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "dragonprojects/dragonjsonserver",
+    "description": "Library for JsonRPC 2 APIs based on Zend Framework 2",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Christoph Herrmann",
+            "email": "developer@dragonprojects.de",
+            "homepage": "http://dragonjsonserver.de/",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "jsonrpc2",
+        "dragonjsonserver",
+        "dragonprojects"
+    ],
+    "homepage": "http://dragonjsonserver.de/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "DragonJsonServer": "src/"
+        },
+        "classmap": [
+            "Module.php"
+        ]
+    }
+}
