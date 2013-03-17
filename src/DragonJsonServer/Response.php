@@ -9,12 +9,10 @@
 
 namespace DragonJsonServer;
 
-use Zend\Json\Server\Response\Http as ZendResponse;
-
 /**
  * Responseklasse mit allen Angaben eines JsonRPC Response
  */
-class Response extends ZendResponse
+class Response extends \Zend\Json\Server\Response\Http
 {
     /**
      * Gibt den Response als Array zurück

@@ -9,13 +9,10 @@
 
 namespace DragonJsonServer;
 
-use DragonJsonServer\Exception,
-    Zend\Json\Server\Client as ZendClient;
-
 /**
  * Erweiterte Klasse für einen JsonRPC Client
  */
-class Client extends ZendClient
+class Client extends \Zend\Json\Server\Client
 {
     /**
      * Macht einen Request zum Server und gibt das Ergebnis zurück
@@ -29,7 +26,7 @@ class Client extends ZendClient
         $response = $this->doRequest($this->createRequest($method, $params));
         if ($response->isError()) {
             $error = $response->getError();
-            throw new Exception($error->getMessage(), $error->getCode(), $error->getData());
+            throw new \DragonJsonServer\Exception($error->getMessage(), $error->getCode(), $error->getData());
         }
         return $response->getResult();
     }

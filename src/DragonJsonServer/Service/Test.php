@@ -9,9 +9,6 @@
 
 namespace DragonJsonServer\Service;
 
-use DragonJsonServer\Exception,
-    DragonJsonServer\Server;
-
 /**
  * Serviceklasse für die Verbindungsprüfung und den Daten der Anwendung
  */
@@ -42,7 +39,7 @@ class Test
      * Service zum Testen eines Requests mit einer Ausnahme
      * @param string $message
      * @param array $data
-     * @throws Exception
+     * @throws \DragonJsonServer\Exception
      * @example
         var serverurl = 'serverurl';
         var client = new DragonJsonClient.Client(serverurl);
@@ -58,7 +55,7 @@ class Test
      */
     public function testException($message = 'message', $data = array('key' => 'value'))
     {
-        throw new Exception($message, $data);
+        throw new \DragonJsonServer\Exception($message, $data);
     }
 
     /**
@@ -138,6 +135,6 @@ class Test
      */
     public function testClientmessage($key = 'key', $data = array('key' => 'value'))
     {
-        Server::addClientmessage($key, $data);
+        \DragonJsonServer\Server::addClientmessage($key, $data);
     }
 }

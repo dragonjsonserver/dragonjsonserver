@@ -7,10 +7,15 @@
  * @package DragonJsonServer
  */
 
-chdir(dirname(__DIR__));
-require 'init_autoloader.php';
+namespace DragonJsonServer\Event;
 
-$serviceManager = \Zend\Mvc\Application::init(require 'config/application.config.php')
-    ->getServiceManager();
-\DragonJsonServer\Server::init($serviceManager)
-    ->run();
+/**
+ * Eventklasse für die Initialisierung der Anwendung
+ */
+class Bootstrap extends \Zend\EventManager\Event
+{
+	/**
+	 * @var string
+	 */
+	protected $name = 'bootstrap';
+}

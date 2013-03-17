@@ -9,8 +9,6 @@
 
 namespace DragonJsonServer\Service;
 
-use DragonJsonServer\Server;
-
 /**
  * Serviceklasse für die Verbindungsprüfung und den Daten der Anwendung
  */
@@ -28,7 +26,7 @@ class Application
      */
     public function getApplication()
     {
-        $config = Server::getServiceManager()->get('Config');
+        $config = \DragonJsonServer\Server::getServiceManager()->get('Config');
         return $config['application'];
     }
 }

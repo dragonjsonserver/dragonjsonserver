@@ -9,13 +9,10 @@
 
 namespace DragonJsonServer;
 
-use DragonJsonServer\Exception,
-    Zend\Json\Server\Request\Http as ZendRequest;
-
 /**
  * Requestklasse mit allen Angaben eines JsonRPC Requests
  */
-class Request extends ZendRequest
+class Request extends \Zend\Json\Server\Request\Http
 {
     /**
      * @var string

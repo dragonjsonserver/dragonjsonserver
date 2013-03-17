@@ -9,25 +9,13 @@
 
 namespace DragonJsonServer;
 
-use DragonJsonServer\Exception,
-    DragonJsonServer\Request,
-    DragonJsonServer\Response,
-    Zend\EventManager\EventManager,
-    Zend\Json\Decoder,
-    Zend\Json\Encoder,
-    Zend\Json\Json,
-    Zend\Json\Server\Server as ZendServer,
-    Zend\Json\Server\Smd,
-    Zend\Server\Cache,
-    Zend\ServiceManager\ServiceManager;
-
 /**
  * Erweiterte Klasse für einen JsonRPC Server
  */
-class Server extends ZendServer
+class Server extends \Zend\Json\Server\Server
 {
     /**
-     * @var ServiceManager
+     * @var \Zend\ServiceManager\ServiceManager
      */
     protected static $serviceManager;
 
@@ -37,20 +25,20 @@ class Server extends ZendServer
     protected static $clientmessages = array();
 
     /**
-     * @var EventManager
+     * @var \Zend\EventManager\EventManager
      */
     protected $eventManager;
 
     /**
      * Initialisiert die erweiterte Klasse für einen JsonRPC Server
-     * @param ServiceManager $serviceManager
+     * @param \Zend\ServiceManager\ServiceManager $serviceManager
      */
-    public static function init(ServiceManager $serviceManager)
+    public static function init(\Zend\ServiceManager\ServiceManager $serviceManager)
     {
         self::setServiceManager($serviceManager);
         $server = new static();
         $config = self::getServiceManager()->get('Config');
-        if (!isset($config['servicecachefile']) || !Cache::get($config['servicecachefile'], $server)) {
+        if (!isset($config['servicecachefile']) || !\Zend\Server\Cache::get($config['servicecachefile'], $server)) {
             foreach ($config['serviceclasses'] as $class => $namespace) {
                 if (is_integer($class)) {
                     $class = $namespace;
@@ -59,29 +47,31 @@ class Server extends ZendServer
                 $server->setClass($class, $namespace);
             }
             if (isset($config['servicecachefile'])) {
-                Cache::save($config['servicecachefile'], $server);
+                \Zend\Server\Cache::save($config['servicecachefile'], $server);
             }
         }
         $sharedEventManager = self::getServiceManager()->get('sharedEventManager');
         foreach ($config['eventlisteners'] as $eventlistener) {
             call_user_func_array(array($sharedEventManager, 'attach'), $eventlistener);
         }
-        $server->getEventManager()->trigger('bootstrap', $server);
+        $event = new \DragonJsonServer\Event\Bootstrap();
+        $event->setTarget($server);
+        $server->getEventManager()->trigger($event);
         return $server;
     }
 
     /**
      * Setzt den ServiceManager der Anwendung
-     * @param ServiceManager $serviceManager
+     * @param \Zend\ServiceManager\ServiceManager $serviceManager
      */
-    protected static function setServiceManager(ServiceManager $serviceManager)
+    protected static function setServiceManager(\Zend\ServiceManager\ServiceManager $serviceManager)
     {
         self::$serviceManager = $serviceManager;
     }
 
     /**
      * Gibt den ServiceManager der Anwendung zurück
-     * @return ServiceManager
+     * @return \Zend\ServiceManager\ServiceManager
      */
     public static function getServiceManager()
     {
@@ -90,14 +80,14 @@ class Server extends ZendServer
 
     /**
      * Gibt einen neuen EventManager zurück
-     * @return EventManager
+     * @return \Zend\EventManager\EventManager
      */
     public static function createEventManager($identifier)
     {
         if (is_object($identifier)) {
             $identifier = get_class($identifier);
         }
-        $eventManager = new EventManager($identifier);
+        $eventManager = new \Zend\EventManager\EventManager($identifier);
         $eventManager->setSharedManager(
             self::getServiceManager()->get('sharedEventManager')
         );
@@ -128,7 +118,7 @@ class Server extends ZendServer
 
     /**
      * Gibt den EventManager für den JsonRPC Server zurück
-     * @return EventManager
+     * @return \Zend\EventManager\EventManager
      */
     public function getEventManager()
     {
@@ -146,17 +136,24 @@ class Server extends ZendServer
     public function handle($request = false)
     {
         if (!$request) {
-            $request = new Request();
-        } elseif (!$request instanceof Request) {
-            throw new Exception('invalid request', array('request' => $request));
+            $request = new \DragonJsonServer\Request();
+        } elseif (!$request instanceof \DragonJsonServer\Request) {
+            throw new \DragonJsonServer\Exception('invalid request', array('request' => $request));
         }
-        $this->getEventManager()->trigger('request', $this, array('request' => $request));
-        $this->setResponse(new Response());
+        $event = new \DragonJsonServer\Event\Request();
+        $event->setTarget($this)
+              ->setRequest($request);
+        $this->getEventManager()->trigger($event);
+        $this->setResponse(new \DragonJsonServer\Response());
         $returnResponse = $this->getReturnResponse();
         $this->setReturnResponse();
         $response = parent::handle($request);
         $this->setReturnResponse($returnResponse);
-        $this->getEventManager()->trigger('response', $this, array('request' => $request, 'response' => $response));
+        $event = new \DragonJsonServer\Event\Response();
+        $event->setTarget($this)
+              ->setRequest($request)
+              ->setResponse($response);
+        $this->getEventManager()->trigger($event);
         if ($response->isError()) {
             $error = $response->getError();
             $data = $error->getData();
@@ -173,7 +170,7 @@ class Server extends ZendServer
     /**
      * Verarbeitet einen GET oder POST Request an den JsonRPC Server
      * @param Request|array|null $requests
-     * @return Smd|array
+     * @return \Zend\Json\Server\Smd|array
      */
     public function run($requests = null)
     {
@@ -183,12 +180,15 @@ class Server extends ZendServer
         if (!isset($requests) && 'GET' == $_SERVER['REQUEST_METHOD']) {
             $servicemap = $this
                 ->getServiceMap()
-                ->setEnvelope(Smd::ENV_JSONRPC_2);
-            $this->getEventManager()->trigger('servicemap', $this, array('servicemap' => $servicemap));
+                ->setEnvelope(\Zend\Json\Server\Smd::ENV_JSONRPC_2);
+            $event = new \DragonJsonServer\Event\Servicemap();
+            $event->setTarget($this)
+                  ->setServicemap($servicemap);
+            $this->getEventManager()->trigger($event);
             echo $servicemap;
         } else {
             if (!isset($requests)) {
-                $requests = Decoder::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
+                $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
             }
             $data = array();
             $this->setReturnResponse();
@@ -200,7 +200,7 @@ class Server extends ZendServer
                         $request['params'] += $params;
                     }
                     $response = $this
-                        ->handle(new Request($request))
+                        ->handle(new \DragonJsonServer\Request($request))
                         ->toArray();
                     if (isset($response['result']) && is_array($response['result'])) {
                         $params += $response['result'];
@@ -210,17 +210,21 @@ class Server extends ZendServer
                 $data['responses'] = $responses;
             } else {
                 $data += $this
-                    ->handle(new Request($requests))
+                    ->handle(new \DragonJsonServer\Request($requests))
                     ->toArray();
             }
-            if (isset($requests['clientmessages']) && isset($requests['clientmessages']['from']) && isset($requests['clientmessages']['to'])) {
-                $this->getEventManager()->trigger('clientmessages', $this, array(
-                    'from' => $requests['clientmessages']['from'],
-                    'to' => $requests['clientmessages']['to'],
-                ));
-                $data['clientmessages'] = self::getClientmessages();
+            if (isset($requests['clientmessages'])) {
+            	$clientmessages = $requests['clientmessages'];
+            	if (isset($clientmessages['from']) && isset($clientmessages['to'])) {
+            		$event = new \DragonJsonServer\Event\Clientmessages();
+            		$event->setTarget($this)
+            		      ->setFrom($clientmessages['from'])
+            		      ->setTo($clientmessages['to']);
+	                $this->getEventManager()->trigger($event);
+	                $data['clientmessages'] = self::getClientmessages();
+            	}
             }
-            echo Encoder::encode($data);
+            echo \Zend\Json\Encoder::encode($data);
         }
     }
 }

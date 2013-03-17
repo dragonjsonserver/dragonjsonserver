@@ -18,8 +18,8 @@ return array(
     ),
     'servicecachefile' => null,
     'serviceclasses' => array(
-        'DragonJsonServer\Service\Application' => 'Application',
-        'DragonJsonServer\Service\Test' => 'Test',
+        '\DragonJsonServer\Service\Application' => 'Application',
+        '\DragonJsonServer\Service\Test' => 'Test',
     ),
     'eventlisteners' => array(),
 );
