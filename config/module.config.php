@@ -16,10 +16,10 @@ return array(
         'version' => 'v2.0.0',
         'copyright' => 'Copyright (c) 2012-2013 DragonProjects (http://dragonprojects.de/)',
     ),
-    'servicecachefile' => null,
-    'serviceclasses' => array(
-        '\DragonJsonServer\Service\Application' => 'Application',
-        '\DragonJsonServer\Service\Test' => 'Test',
+    'apicachefile' => null,
+    'apiclasses' => array(
+        '\DragonJsonServer\Api\Application' => 'Application',
+        '\DragonJsonServer\Api\Test' => 'Test',
     ),
     'eventlisteners' => array(),
 );

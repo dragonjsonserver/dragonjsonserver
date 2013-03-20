@@ -7,21 +7,21 @@
  * @package DragonJsonServer
  */
 
-namespace DragonJsonServer\Service;
+namespace DragonJsonServer\Api;
 
 /**
- * Serviceklasse für die Verbindungsprüfung und den Daten der Anwendung
+ * API Klasse für die Verbindungsprüfung und den Daten der Anwendung
  */
 class Application
 {
     /**
-     * Service zur Verbindungsprüfung
+     * Methode zur Verbindungsprüfung
      */
     public function ping()
     {}
 
     /**
-     * Service zur Rückgabe der Daten der Anwendungen
+     * Methode zur Rückgabe der Daten der Anwendungen
      * @return array
      */
     public function getApplication()

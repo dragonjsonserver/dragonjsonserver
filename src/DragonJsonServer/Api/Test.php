@@ -7,15 +7,15 @@
  * @package DragonJsonServer
  */
 
-namespace DragonJsonServer\Service;
+namespace DragonJsonServer\Api;
 
 /**
- * Serviceklasse für die Verbindungsprüfung und den Daten der Anwendung
+ * API Klasse für verschiedene Testmethoden der Client Server Kommunikation
  */
 class Test
 {
     /**
-     * Service zum Testen eines Requests mit einem Result
+     * Methode zum Testen eines Requests mit einem Result
      * @param array $result
      * @return array
      * @example
@@ -36,7 +36,7 @@ class Test
     }
 
     /**
-     * Service zum Testen eines Requests mit einer Ausnahme
+     * Methode zum Testen eines Requests mit einer Ausnahme
      * @param string $message
      * @param array $data
      * @throws \DragonJsonServer\Exception
@@ -59,7 +59,7 @@ class Test
     }
 
     /**
-     * Service zum Testen eines Requests mit einem Fehler
+     * Methode zum Testen eines Requests mit einem Fehler
      * @example
         var serverurl = 'serverurl';
         var client = new DragonJsonClient.Client(serverurl);
@@ -88,7 +88,7 @@ class Test
     }
 
     /**
-     * Erster Service zum Testen eines Multirequest
+     * Erster Methode zum Testen eines Multirequest
      * @example
         var serverurl = 'serverurl';
         var client = new DragonJsonClient.Client(serverurl);
@@ -114,7 +114,7 @@ class Test
     }
 
     /**
-     * Zweiter Service zum Testen eines Multirequest
+     * Zweiter Methode zum Testen eines Multirequest
      */
     public function testMultirequestSecond($key)
     {
@@ -122,7 +122,7 @@ class Test
     }
 
     /**
-     * Service zum Testen eines Requests mit einer Clientnachricht
+     * Methode zum Testen eines Requests mit einer Clientnachricht
      * @example
         var serverurl = 'serverurl';
         var client = new DragonJsonClient.Client(serverurl);

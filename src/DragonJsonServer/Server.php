@@ -38,16 +38,16 @@ class Server extends \Zend\Json\Server\Server
         self::setServiceManager($serviceManager);
         $server = new static();
         $config = self::getServiceManager()->get('Config');
-        if (!isset($config['servicecachefile']) || !\Zend\Server\Cache::get($config['servicecachefile'], $server)) {
-            foreach ($config['serviceclasses'] as $class => $namespace) {
+        if (!isset($config['apicachefile']) || !\Zend\Server\Cache::get($config['apicachefile'], $server)) {
+            foreach ($config['apiclasses'] as $class => $namespace) {
                 if (is_integer($class)) {
                     $class = $namespace;
                     $namespace = str_replace('\\', '.', $class);
                 }
                 $server->setClass($class, $namespace);
             }
-            if (isset($config['servicecachefile'])) {
-                \Zend\Server\Cache::save($config['servicecachefile'], $server);
+            if (isset($config['apicachefile'])) {
+                \Zend\Server\Cache::save($config['apicachefile'], $server);
             }
         }
         $sharedEventManager = self::getServiceManager()->get('sharedEventManager');
