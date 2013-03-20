@@ -82,10 +82,8 @@ class Server extends \Zend\Json\Server\Server
         if (is_object($identifier)) {
             $identifier = get_class($identifier);
         }
-        $eventManager = new \Zend\EventManager\EventManager($identifier);
-        $eventManager->setSharedManager(
-            self::getServiceManager()->get('sharedEventManager')
-        );
+        $eventManager = self::getServiceManager()->get('eventManager');
+        $eventManager->setIdentifiers($identifier);
         return $eventManager;
     }
 
