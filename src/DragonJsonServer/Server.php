@@ -12,7 +12,7 @@ namespace DragonJsonServer;
 /**
  * Erweiterte Klasse für einen JsonRPC Server
  */
-class Server extends \Zend\Json\Server\Server
+class Server extends \Zend\Json\Server\Server implements \Zend\EventManager\EventsCapableInterface
 {
     /**
      * @var \Zend\ServiceManager\ServiceManager
