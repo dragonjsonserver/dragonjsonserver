@@ -20,11 +20,6 @@ class Server extends \Zend\Json\Server\Server
     protected static $serviceManager;
 
     /**
-     * @var array
-     */
-    protected static $clientmessages = array();
-
-    /**
      * @var \Zend\EventManager\EventManager
      */
     protected $eventManager;
@@ -92,28 +87,6 @@ class Server extends \Zend\Json\Server\Server
             self::getServiceManager()->get('sharedEventManager')
         );
         return $eventManager;
-    }
-
-    /**
-     * Fügt der aktuellen Response eine Clientmessage hinzu
-     * @param string $index
-     * @param array $data
-     */
-    public static function addClientmessage($key, array $data = array())
-    {
-        if (!isset(self::$clientmessages[$key])) {
-            self::$clientmessages[$key] = array();
-        }
-        self::$clientmessages[$key][] = $data;
-    }
-
-    /**
-     * Gibt die Clientmessages der aktuellen Response zurück
-     * @return array
-     */
-    protected static function getClientmessages()
-    {
-        return self::$clientmessages;
     }
 
     /**
@@ -221,7 +194,9 @@ class Server extends \Zend\Json\Server\Server
             		      ->setFrom($clientmessages['from'])
             		      ->setTo($clientmessages['to']);
 	                $this->getEventManager()->trigger($event);
-	                $data['clientmessages'] = self::getClientmessages();
+	                $data['clientmessages'] = self::getServiceManager()
+	                    ->get('Clientmessages')
+	                    ->getClientmessages();
             	}
             }
             echo \Zend\Json\Encoder::encode($data);

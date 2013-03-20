@@ -135,6 +135,8 @@ class Test
      */
     public function testClientmessage($key = 'key', $data = array('key' => 'value'))
     {
-        \DragonJsonServer\Server::addClientmessage($key, $data);
+        \DragonJsonServer\Server::getServiceManager()
+            ->get('Clientmessages')
+            ->addClientmessage($key, $data);
     }
 }

@@ -37,4 +37,13 @@ class Module
             ),
         );
     }
+
+    /**
+     * Gibt die Servicekonfiguration des Moduls zurück
+     * @return array
+     */
+    public function getServiceConfig()
+    {
+        return require __DIR__ . '/config/service.config.php';
+    }
 }
