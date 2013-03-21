@@ -46,7 +46,8 @@ class Module
     {
         return [
 		    'invokables' => [
-		        'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
+                'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
+                'Server' => '\DragonJsonServer\Service\Server',
 		    ],
 		];
     }

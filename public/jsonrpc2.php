@@ -13,4 +13,4 @@ require 'init_autoloader.php';
 $serviceManager = \Zend\Mvc\Application::init(
     require 'config/application.config.php'
 )->getServiceManager();
-(new \DragonJsonServer\Server())->run();
+$serviceManager->get('Server')->run();

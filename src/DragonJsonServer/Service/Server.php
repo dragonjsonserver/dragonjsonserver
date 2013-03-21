@@ -7,7 +7,7 @@
  * @package DragonJsonServer
  */
 
-namespace DragonJsonServer;
+namespace DragonJsonServer\Service;
 
 /**
  * Erweiterte Klasse für einen JsonRPC Server
@@ -39,9 +39,10 @@ class Server extends \Zend\Json\Server\Server
         foreach ($config['eventlisteners'] as $eventlistener) {
             call_user_func_array(array($sharedEventManager, 'attach'), $eventlistener);
         }
-        $event = new \DragonJsonServer\Event\Bootstrap();
-        $event->setTarget($this);
-        $this->getEventManager()->trigger($event);
+        $this->getEventManager()->trigger(
+            (new \DragonJsonServer\Event\Bootstrap())
+                ->setTarget($this)
+        );
 	}
 
     /**
@@ -56,20 +57,22 @@ class Server extends \Zend\Json\Server\Server
         } elseif (!$request instanceof \DragonJsonServer\Request) {
             throw new \DragonJsonServer\Exception('invalid request', array('request' => $request));
         }
-        $event = new \DragonJsonServer\Event\Request();
-        $event->setTarget($this)
-              ->setRequest($request);
-        $this->getEventManager()->trigger($event);
+        $this->getEventManager()->trigger(
+            (new \DragonJsonServer\Event\Request())
+                ->setTarget($this)
+                ->setRequest($request)
+        );
         $this->setResponse(new \DragonJsonServer\Response());
         $returnResponse = $this->getReturnResponse();
         $this->setReturnResponse();
         $response = parent::handle($request);
         $this->setReturnResponse($returnResponse);
-        $event = new \DragonJsonServer\Event\Response();
-        $event->setTarget($this)
-              ->setRequest($request)
-              ->setResponse($response);
-        $this->getEventManager()->trigger($event);
+        $this->getEventManager()->trigger(
+            (new \DragonJsonServer\Event\Response())
+                ->setTarget($this)
+                ->setRequest($request)
+                ->setResponse($response)
+        );
         if ($response->isError()) {
             $error = $response->getError();
             $data = $error->getData();
@@ -97,10 +100,11 @@ class Server extends \Zend\Json\Server\Server
             $servicemap = $this
                 ->getServiceMap()
                 ->setEnvelope(\Zend\Json\Server\Smd::ENV_JSONRPC_2);
-            $event = new \DragonJsonServer\Event\Servicemap();
-            $event->setTarget($this)
-                  ->setServicemap($servicemap);
-            $this->getEventManager()->trigger($event);
+            $this->getEventManager()->trigger(
+                (new \DragonJsonServer\Event\Servicemap())
+                    ->setTarget($this)
+                    ->setServicemap($servicemap)
+            );
             echo $servicemap;
         } else {
             if (!isset($requests)) {

@@ -44,11 +44,12 @@ class Clientmessages
      */
     public function collectClientmessages($from, $to)
     {
-        $event = new \DragonJsonServer\Event\Clientmessages();
-        $event->setTarget($this)
-              ->setFrom($from)
-              ->setTo($to);
-        $this->getEventManager()->trigger($event);
+        $this->getEventManager()->trigger(
+            (new \DragonJsonServer\Event\Clientmessages())
+                ->setTarget($this)
+                ->setFrom($from)
+                ->setTo($to)
+        );
         return $this;
     }
 
