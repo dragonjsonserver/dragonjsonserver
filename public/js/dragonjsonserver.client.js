@@ -53,7 +53,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     
     /**
      * Sendet einen Request zum Server mit den übergebenen Daten
-     * @param Request|array requests
+     * @param DragonJsonServer.Request|array requests
      * @param object sendoptions
      * @return Client
      */
