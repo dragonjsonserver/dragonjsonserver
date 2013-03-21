@@ -37,7 +37,7 @@ class Server extends \Zend\Json\Server\Server
         }
         $sharedEventManager = $this->getServiceManager()->get('sharedEventManager');
         foreach ($config['eventlisteners'] as $eventlistener) {
-            call_user_func_array(array($sharedEventManager, 'attach'), $eventlistener);
+            call_user_func_array([$sharedEventManager, 'attach'], $eventlistener);
         }
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Bootstrap())
@@ -55,7 +55,7 @@ class Server extends \Zend\Json\Server\Server
         if (!$request) {
             $request = new \DragonJsonServer\Request();
         } elseif (!$request instanceof \DragonJsonServer\Request) {
-            throw new \DragonJsonServer\Exception('invalid request', array('request' => $request));
+            throw new \DragonJsonServer\Exception('invalid request', ['request' => $request]);
         }
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Request())

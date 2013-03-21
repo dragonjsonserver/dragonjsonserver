@@ -32,7 +32,7 @@ class Test
         );
         client.send(request);
      */
-    public function testResult($result = array('key' => 'value'))
+    public function testResult($result = ['key' => 'value'])
     {
         return $result;
     }
@@ -55,7 +55,7 @@ class Test
         );
         client.send(request);
      */
-    public function testException($message = 'message', $data = array('key' => 'value'))
+    public function testException($message = 'message', $data = ['key' => 'value'])
     {
         throw new \DragonJsonServer\Exception($message, $data);
     }
@@ -112,7 +112,7 @@ class Test
      */
     public function testMultirequestFirst($value = 'value')
     {
-        return array('key' => $value);
+        return ['key' => $value];
     }
 
     /**
@@ -120,7 +120,7 @@ class Test
      */
     public function testMultirequestSecond($key)
     {
-        return array('key' => $key);
+        return ['key' => $key];
     }
 
     /**
@@ -135,7 +135,7 @@ class Test
             })
             .send(request);
      */
-    public function testClientmessage($key = 'key', $data = array('key' => 'value'))
+    public function testClientmessage($key = 'key', $data = ['key' => 'value'])
     {
         $this->getServiceManager()->get('Clientmessages')
             ->addClientmessage($key, $data);
