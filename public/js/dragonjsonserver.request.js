@@ -6,8 +6,8 @@
  * @package DragonJsonServer
  */
 
-if ('undefined' == typeof DragonJsonClient) {
-    DragonJsonClient = {};
+if ('undefined' == typeof DragonJsonServer) {
+	DragonJsonServer = {};
 }
 
 /**
@@ -18,7 +18,7 @@ if ('undefined' == typeof DragonJsonClient) {
  * @param function exception
  * @constructor
  */
-DragonJsonClient.Request = function (method, params, result, exception)
+DragonJsonServer.Request = function (method, params, result, exception)
 {
     this.id;
     this.method = method;

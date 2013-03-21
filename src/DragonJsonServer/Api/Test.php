@@ -18,12 +18,12 @@ class Test
 
     /**
      * Methode zum Testen eines Requests mit einem Result
-     * @param array $result
+     * @param object $result
      * @return array
      * @example
         var serverurl = 'serverurl';
-        var client = new DragonJsonClient.Client(serverurl);
-        var request = new DragonJsonClient.Request(
+        var client = new DragonJsonServer.Client(serverurl);
+        var request = new DragonJsonServer.Request(
             'Test.testResult',
             {},
             function (result) {
@@ -40,12 +40,12 @@ class Test
     /**
      * Methode zum Testen eines Requests mit einer Ausnahme
      * @param string $message
-     * @param array $data
+     * @param object $data
      * @throws \DragonJsonServer\Exception
      * @example
         var serverurl = 'serverurl';
-        var client = new DragonJsonClient.Client(serverurl);
-        var request = new DragonJsonClient.Request(
+        var client = new DragonJsonServer.Client(serverurl);
+        var request = new DragonJsonServer.Request(
             'Test.testException',
             {},
             function () {},
@@ -64,8 +64,8 @@ class Test
      * Methode zum Testen eines Requests mit einem Fehler
      * @example
         var serverurl = 'serverurl';
-        var client = new DragonJsonClient.Client(serverurl);
-        var request = new DragonJsonClient.Request(
+        var client = new DragonJsonServer.Client(serverurl);
+        var request = new DragonJsonServer.Request(
             'Test.testError',
             {}
         );
@@ -91,17 +91,18 @@ class Test
 
     /**
      * Erster Methode zum Testen eines Multirequest
+     * @param string $value
      * @example
         var serverurl = 'serverurl';
-        var client = new DragonJsonClient.Client(serverurl);
-        var requestFirst = new DragonJsonClient.Request(
+        var client = new DragonJsonServer.Client(serverurl);
+        var requestFirst = new DragonJsonServer.Request(
             'Test.testMultirequestFirst',
             {},
             function (result) {
                 console.log(result);
             }
         );
-        var requestSecond = new DragonJsonClient.Request(
+        var requestSecond = new DragonJsonServer.Request(
             'Test.testMultirequestSecond',
             {},
             function (result) {
@@ -125,10 +126,12 @@ class Test
 
     /**
      * Methode zum Testen eines Requests mit einer Clientnachricht
+     * @param string $key
+     * @param object $data
      * @example
         var serverurl = 'serverurl';
-        var client = new DragonJsonClient.Client(serverurl);
-        var request = new DragonJsonClient.Request('Test.testClientmessage');
+        var client = new DragonJsonServer.Client(serverurl);
+        var request = new DragonJsonServer.Request('Test.testClientmessage');
         client
             .setClientmessageCallback('key', function (data) {
                 console.log(data);

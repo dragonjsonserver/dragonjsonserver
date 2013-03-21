@@ -76,7 +76,7 @@ class Server extends \Zend\Json\Server\Server
         if ($response->isError()) {
             $error = $response->getError();
             $data = $error->getData();
-            if ($data instanceof Exception) {
+            if ($data instanceof \DragonJsonServer\Exception) {
                 $error->setData($data->getData());
             }
         }

@@ -6,8 +6,8 @@
  * @package DragonJsonServer
  */
 
-if ('undefined' == typeof DragonJsonClient) {
-    DragonJsonClient = {};
+if ('undefined' == typeof DragonJsonServer) {
+	DragonJsonServer = {};
 }
 
 /**
@@ -16,7 +16,7 @@ if ('undefined' == typeof DragonJsonClient) {
  * @param object clientoptions
  * @constructor
  */
-DragonJsonClient.Client = function (serverurl, clientoptions)
+DragonJsonServer.Client = function (serverurl, clientoptions)
 {
     var serverurl = serverurl;
     var clientoptions = clientoptions || {};
@@ -82,22 +82,22 @@ DragonJsonClient.Client = function (serverurl, clientoptions)
             dataType: 'json',
             data: JSON.stringify(data),
         }, clientoptions, sendoptions, {
-            success: function (data, statusText, jqXHR) {
-                if (undefined != data.clientmessages) {
-                    $.each(data.clientmessages, function (key, clientmessages) {
-                        $.each(clientmessages, function (index, data) {
+            success: function (json, statusText, jqXHR) {
+                if (undefined != json.clientmessages) {
+                    $.each(json.clientmessages, function (key, clientmessages) {
+                        $.each(clientmessages, function (index, json) {
                             if (undefined != clientmessage.callbacks[key]) {
-                                clientmessage.callbacks[key](data);
+                                clientmessage.callbacks[key](json);
                             }
                         });
                     });
                 }
-                data.clientmessages = undefined;
+                json.clientmessages = undefined;
                 var responses = {};
-                if (undefined == data.responses) {
-                    responses[data.id] = data;
+                if (undefined == json.responses) {
+                    responses[json.id] = json;
                 } else {
-                    $.each(data.responses, function (index, response) {
+                    $.each(json.responses, function (index, response) {
                         responses[response.id] = response;
                     });
                 }
@@ -120,6 +120,11 @@ DragonJsonClient.Client = function (serverurl, clientoptions)
                         }
                     }
                 });
+                if (undefined != sendoptions.success) {
+                    sendoptions.success(json, statusText, jqXHR, requests);
+                } else if (undefined != clientoptions.success) {
+                    clientoptions.success(json, statusText, jqXHR, requests);
+                }
             },
             error: function (jqXHR, statusText, errorThrown)
             {
