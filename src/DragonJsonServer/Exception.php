@@ -24,7 +24,7 @@ class Exception extends \Exception
      * @param string $message
      * @param array $data
      */
-    public function __construct($message = '', array $data = array())
+    public function __construct($message = '', array $data = [])
     {
         parent::__construct($message);
         $this->setData($data);

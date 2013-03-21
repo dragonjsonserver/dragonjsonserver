@@ -17,17 +17,17 @@ class Clientmessages
     /**
      * @var array
      */
-    protected $clientmessages = array();
+    protected $clientmessages = [];
 
     /**
      * Fügt der aktuellen Response eine Clientmessage hinzu
      * @param string $key
      * @param array $data
      */
-    public function addClientmessage($key, array $data = array())
+    public function addClientmessage($key, array $data = [])
     {
         if (!isset($this->clientmessages[$key])) {
-            $this->clientmessages[$key] = array();
+            $this->clientmessages[$key] = [];
         }
         $this->clientmessages[$key][] = $data;
     }

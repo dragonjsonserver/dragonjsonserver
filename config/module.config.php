@@ -10,16 +10,16 @@
 /**
  * @return array
  */
-return array(
-    'application' => array(
+return [
+    'application' => [
         'name' => 'DragonJsonServer',
         'version' => 'v2.0.0',
         'copyright' => 'Copyright (c) 2012-2013 DragonProjects (http://dragonprojects.de/)',
-    ),
+    ],
     'apicachefile' => null,
-    'apiclasses' => array(
+    'apiclasses' => [
         '\DragonJsonServer\Api\Application' => 'Application',
         '\DragonJsonServer\Api\Test' => 'Test',
-    ),
-    'eventlisteners' => array(),
-);
+    ],
+    'eventlisteners' => [],
+];

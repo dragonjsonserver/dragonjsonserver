@@ -14,6 +14,8 @@ namespace DragonJsonServer\Api;
  */
 class Application
 {
+    use \DragonJsonServer\ServiceManagerTrait;
+
     /**
      * Methode zur Verbindungsprüfung
      */
@@ -26,7 +28,6 @@ class Application
      */
     public function getApplication()
     {
-        $config = \DragonJsonServer\Server::getServiceManager()->get('Config');
-        return $config['application'];
+        return $this->getServiceManager()->get('Config')['application'];
     }
 }

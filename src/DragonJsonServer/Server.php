@@ -12,92 +12,37 @@ namespace DragonJsonServer;
 /**
  * Erweiterte Klasse für einen JsonRPC Server
  */
-class Server extends \Zend\Json\Server\Server implements \Zend\EventManager\EventsCapableInterface
+class Server extends \Zend\Json\Server\Server
 {
-    /**
-     * @var \Zend\ServiceManager\ServiceManager
-     */
-    protected static $serviceManager;
+    use \DragonJsonServer\EventManagerTrait;
 
-    /**
-     * @var \Zend\EventManager\EventManager
-     */
-    protected $eventManager;
-
-    /**
-     * Initialisiert die erweiterte Klasse für einen JsonRPC Server
-     * @param \Zend\ServiceManager\ServiceManager $serviceManager
-     */
-    public static function init(\Zend\ServiceManager\ServiceManager $serviceManager)
-    {
-        self::setServiceManager($serviceManager);
-        $server = new static();
-        $config = self::getServiceManager()->get('Config');
-        if (!isset($config['apicachefile']) || !\Zend\Server\Cache::get($config['apicachefile'], $server)) {
+	/**
+	 * Initialisiert den Server mit den API Klassen und Event Listenern
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$config = $this->getServiceManager()->get('Config');
+        if (!isset($config['apicachefile']) || !\Zend\Server\Cache::get($config['apicachefile'], $this)) {
             foreach ($config['apiclasses'] as $class => $namespace) {
                 if (is_integer($class)) {
                     $class = $namespace;
                     $namespace = str_replace('\\', '.', $class);
                 }
-                $server->setClass($class, $namespace);
+                $this->setClass($class, $namespace);
             }
             if (isset($config['apicachefile'])) {
-                \Zend\Server\Cache::save($config['apicachefile'], $server);
+                \Zend\Server\Cache::save($config['apicachefile'], $this);
             }
         }
-        $sharedEventManager = self::getServiceManager()->get('sharedEventManager');
+        $sharedEventManager = $this->getServiceManager()->get('sharedEventManager');
         foreach ($config['eventlisteners'] as $eventlistener) {
             call_user_func_array(array($sharedEventManager, 'attach'), $eventlistener);
         }
         $event = new \DragonJsonServer\Event\Bootstrap();
-        $event->setTarget($server);
-        $server->getEventManager()->trigger($event);
-        return $server;
-    }
-
-    /**
-     * Setzt den ServiceManager der Anwendung
-     * @param \Zend\ServiceManager\ServiceManager $serviceManager
-     */
-    protected static function setServiceManager(\Zend\ServiceManager\ServiceManager $serviceManager)
-    {
-        self::$serviceManager = $serviceManager;
-    }
-
-    /**
-     * Gibt den ServiceManager der Anwendung zurück
-     * @return \Zend\ServiceManager\ServiceManager
-     */
-    public static function getServiceManager()
-    {
-        return self::$serviceManager;
-    }
-
-    /**
-     * Gibt einen neuen EventManager zurück
-     * @return \Zend\EventManager\EventManager
-     */
-    public static function createEventManager($identifier)
-    {
-        if (is_object($identifier)) {
-            $identifier = get_class($identifier);
-        }
-        $eventManager = self::getServiceManager()->get('eventManager');
-        $eventManager->setIdentifiers($identifier);
-        return $eventManager;
-    }
-
-    /**
-     * Gibt den EventManager für den JsonRPC Server zurück
-     * @return \Zend\EventManager\EventManager
-     */
-    public function getEventManager()
-    {
-        if (null === $this->eventManager) {
-            $this->eventManager = self::createEventManager($this);
-        }
-        return $this->eventManager;
-    }
+        $event->setTarget($this);
+        $this->getEventManager()->trigger($event);
+	}
 
     /**
      * Verarbeitet einen JsonRPC Request an den JsonRPC Server
@@ -161,11 +106,11 @@ class Server extends \Zend\Json\Server\Server implements \Zend\EventManager\Even
             if (!isset($requests)) {
                 $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
             }
-            $data = array();
+            $data = [];
             $this->setReturnResponse();
             if (isset($requests['requests']) && is_array($requests['requests'])) {
-                $responses = array();
-                $params = array();
+                $responses = [];
+                $params = [];
                 foreach ($requests['requests'] as $request) {
                     if (isset($request['params'])) {
                         $request['params'] += $params;

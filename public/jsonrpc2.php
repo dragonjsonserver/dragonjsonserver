@@ -10,7 +10,7 @@
 chdir(dirname(__DIR__));
 require 'init_autoloader.php';
 
-$serviceManager = \Zend\Mvc\Application::init(require 'config/application.config.php')
-    ->getServiceManager();
-\DragonJsonServer\Server::init($serviceManager)
-    ->run();
+$serviceManager = \Zend\Mvc\Application::init(
+    require 'config/application.config.php'
+)->getServiceManager();
+(new \DragonJsonServer\Server())->run();

@@ -21,7 +21,7 @@ class Client extends \Zend\Json\Server\Client
      * @return mixed
      * @throws Exception
      */
-    public function call($method, $params = array())
+    public function call($method, $params = [])
     {
         $response = $this->doRequest($this->createRequest($method, $params));
         if ($response->isError()) {
