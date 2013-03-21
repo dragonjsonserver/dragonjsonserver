@@ -115,9 +115,7 @@ class Server extends \Zend\Json\Server\Server
                     if (isset($request['params'])) {
                         $request['params'] += $params;
                     }
-                    $response = $this
-                        ->handle(new \DragonJsonServer\Request($request))
-                        ->toArray();
+                    $response = $this->handle(new \DragonJsonServer\Request($request))->toArray();
                     if (isset($response['result']) && is_array($response['result'])) {
                         $params += $response['result'];
                     }
@@ -125,20 +123,13 @@ class Server extends \Zend\Json\Server\Server
                 }
                 $data['responses'] = $responses;
             } else {
-                $data += $this
-                    ->handle(new \DragonJsonServer\Request($requests))
-                    ->toArray();
+                $data += $this->handle(new \DragonJsonServer\Request($requests))->toArray();
             }
             if (isset($requests['clientmessages'])) {
             	$clientmessages = $requests['clientmessages'];
             	if (isset($clientmessages['from']) && isset($clientmessages['to'])) {
-            		$event = new \DragonJsonServer\Event\Clientmessages();
-            		$event->setTarget($this)
-            		      ->setFrom($clientmessages['from'])
-            		      ->setTo($clientmessages['to']);
-	                $this->getEventManager()->trigger($event);
-	                $data['clientmessages'] = self::getServiceManager()
-	                    ->get('Clientmessages')
+	                $data['clientmessages'] = $this->getServiceManager()->get('Clientmessages')
+                        ->collectClientmessages($clientmessages['from'], $clientmessages['to'])
 	                    ->getClientmessages();
             	}
             }

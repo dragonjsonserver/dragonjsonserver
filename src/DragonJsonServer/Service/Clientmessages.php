@@ -14,6 +14,8 @@ namespace DragonJsonServer\Service;
  */
 class Clientmessages
 {
+	use \DragonJsonServer\EventManagerTrait;
+
     /**
      * @var array
      */
@@ -31,6 +33,22 @@ class Clientmessages
             $this->clientmessages[$key] = [];
         }
         $this->clientmessages[$key][] = $data;
+        return $this;
+    }
+
+    /**
+     * Sammelt die Clientmessages der aktuellen Response
+     * @param integer $from
+     * @param integer $to
+     * @return Clientmessages
+     */
+    public function collectClientmessages($from, $to)
+    {
+        $event = new \DragonJsonServer\Event\Clientmessages();
+        $event->setTarget($this)
+              ->setFrom($from)
+              ->setTo($to);
+        $this->getEventManager()->trigger($event);
         return $this;
     }
 
