@@ -24,7 +24,7 @@ class Module
     }
 
     /**
-     * Gibt die Konfiguration des Autoloaders zurück
+     * Gibt die Autoloaderkonfiguration des Moduls zurück
      * @return array
      */
     public function getAutoloaderConfig()
