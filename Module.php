@@ -44,6 +44,10 @@ class Module
      */
     public function getServiceConfig()
     {
-        return require __DIR__ . '/config/service.config.php';
+        return [
+		    'invokables' => [
+		        'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
+		    ],
+		];
     }
 }
