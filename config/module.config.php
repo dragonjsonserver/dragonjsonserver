@@ -19,7 +19,6 @@ return [
     'apicachefile' => null,
     'apiclasses' => [
         '\DragonJsonServer\Api\Application' => 'Application',
-        '\DragonJsonServer\Api\Test' => 'Test',
     ],
     'eventlisteners' => [],
 ];
