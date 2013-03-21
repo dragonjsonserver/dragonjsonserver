@@ -14,6 +14,8 @@ namespace DragonJsonServer\Api;
  */
 class Test
 {
+    use \DragonJsonServer\ServiceManagerTrait;
+
     /**
      * Methode zum Testen eines Requests mit einem Result
      * @param array $result
@@ -135,8 +137,7 @@ class Test
      */
     public function testClientmessage($key = 'key', $data = array('key' => 'value'))
     {
-        \DragonJsonServer\Server::getServiceManager()
-            ->get('Clientmessages')
+        $this->getServiceManager()->get('Clientmessages')
             ->addClientmessage($key, $data);
     }
 }

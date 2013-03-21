@@ -23,6 +23,7 @@ class Clientmessages
      * Fügt der aktuellen Response eine Clientmessage hinzu
      * @param string $key
      * @param array $data
+     * @return Clientmessages
      */
     public function addClientmessage($key, array $data = [])
     {
@@ -30,6 +31,7 @@ class Clientmessages
             $this->clientmessages[$key] = [];
         }
         $this->clientmessages[$key][] = $data;
+        return $this;
     }
 
     /**
