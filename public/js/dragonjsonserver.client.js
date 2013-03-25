@@ -92,7 +92,6 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                         });
                     });
                 }
-                json.clientmessages = undefined;
                 var responses = {};
                 if (undefined == json.responses) {
                     responses[json.id] = json;
