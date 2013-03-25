@@ -132,9 +132,12 @@ class Server extends \Zend\Json\Server\Server
             if (isset($requests['clientmessages'])) {
             	$clientmessages = $requests['clientmessages'];
             	if (isset($clientmessages['from']) && isset($clientmessages['to'])) {
-	                $data['clientmessages'] = $this->getServiceManager()->get('Clientmessages')
+            		$clientmessages = $this->getServiceManager()->get('Clientmessages')
                         ->collectClientmessages($clientmessages['from'], $clientmessages['to'])
 	                    ->getClientmessages();
+            		if (count($clientmessages) > 0) {
+            			$data['clientmessages'] = $clientmessages;
+            		}
             	}
             }
             echo \Zend\Json\Encoder::encode($data);
