@@ -35,10 +35,6 @@ class ServerFactory implements \Zend\ServiceManager\FactoryInterface
     			\Zend\Server\Cache::save($config['apicachefile'], $server);
     		}
     	}
-    	$sharedEventManager = $serviceLocator->get('sharedEventManager');
-    	foreach ($config['eventlisteners'] as $eventlistener) {
-    		call_user_func_array([$sharedEventManager, 'attach'], $eventlistener);
-    	}
     	return $server;
     }
 }
