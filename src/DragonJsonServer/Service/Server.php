@@ -16,35 +16,6 @@ class Server extends \Zend\Json\Server\Server
 {
     use \DragonJsonServer\EventManagerTrait;
 
-	/**
-	 * Initialisiert den Server mit den API Klassen und Event Listenern
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$config = $this->getServiceManager()->get('Config');
-        if (!isset($config['apicachefile']) || !\Zend\Server\Cache::get($config['apicachefile'], $this)) {
-            foreach ($config['apiclasses'] as $class => $namespace) {
-                if (is_integer($class)) {
-                    $class = $namespace;
-                    $namespace = str_replace('\\', '.', $class);
-                }
-                $this->setClass($class, $namespace);
-            }
-            if (isset($config['apicachefile'])) {
-                \Zend\Server\Cache::save($config['apicachefile'], $this);
-            }
-        }
-        $sharedEventManager = $this->getServiceManager()->get('sharedEventManager');
-        foreach ($config['eventlisteners'] as $eventlistener) {
-            call_user_func_array([$sharedEventManager, 'attach'], $eventlistener);
-        }
-        $this->getEventManager()->trigger(
-            (new \DragonJsonServer\Event\Bootstrap())
-                ->setTarget($this)
-        );
-	}
-
     /**
      * Verarbeitet einen JsonRPC Request an den JsonRPC Server
      * @param Request $request
@@ -55,7 +26,7 @@ class Server extends \Zend\Json\Server\Server
         if (!$request) {
             $request = new \DragonJsonServer\Request();
         } elseif (!$request instanceof \DragonJsonServer\Request) {
-            throw new \DragonJsonServer\Exception('invalid request', ['request' => $request]);
+            throw new \DragonJsonServer\Exception('invalid requestclass', ['requestclass' => get_class($request)]);
         }
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Request())
@@ -88,11 +59,15 @@ class Server extends \Zend\Json\Server\Server
 
     /**
      * Verarbeitet einen GET oder POST Request an den JsonRPC Server
-     * @param Request|array|null $requests
+     * @param array|null $requests
      * @return \Zend\Json\Server\Smd|array
      */
     public function run($requests = null)
     {
+        $this->getEventManager()->trigger(
+            (new \DragonJsonServer\Event\Bootstrap())
+                ->setTarget($this)
+        );
         if (!headers_sent()) {
             header('Content-Type: application/json');
         }
@@ -105,12 +80,16 @@ class Server extends \Zend\Json\Server\Server
                     ->setTarget($this)
                     ->setServicemap($servicemap)
             );
-            echo $servicemap;
+	        if ($this->getReturnResponse()) {
+	            return $servicemap;
+	        }
+	        echo $servicemap;
         } else {
             if (!isset($requests)) {
                 $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
             }
             $data = [];
+        	$returnResponse = $this->getReturnResponse();
             $this->setReturnResponse();
             if (isset($requests['requests']) && is_array($requests['requests'])) {
                 $responses = [];
@@ -140,6 +119,10 @@ class Server extends \Zend\Json\Server\Server
             		}
             	}
             }
+	        $this->setReturnResponse($returnResponse);
+	        if ($returnResponse) {
+	            return $data;
+	        }
             echo \Zend\Json\Encoder::encode($data);
         }
     }

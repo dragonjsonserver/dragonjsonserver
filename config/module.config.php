@@ -22,9 +22,11 @@ return [
     ],
     'eventlisteners' => [],
 	'service_manager' => [
+		'factories' => [
+            'Server' => '\DragonJsonServer\Service\ServerFactory',
+		],
 		'invokables' => [
             'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
-            'Server' => '\DragonJsonServer\Service\Server',
 		],
 	],
 ];
