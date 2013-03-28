@@ -37,18 +37,4 @@ class Module
             ],
         ];
     }
-
-    /**
-     * Gibt die Servicekonfiguration des Moduls zurück
-     * @return array
-     */
-    public function getServiceConfig()
-    {
-        return [
-		    'invokables' => [
-                'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
-                'Server' => '\DragonJsonServer\Service\Server',
-		    ],
-		];
-    }
 }

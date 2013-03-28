@@ -21,4 +21,10 @@ return [
         '\DragonJsonServer\Api\Application' => 'Application',
     ],
     'eventlisteners' => [],
+	'service_manager' => [
+		'invokables' => [
+            'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
+            'Server' => '\DragonJsonServer\Service\Server',
+		],
+	],
 ];
