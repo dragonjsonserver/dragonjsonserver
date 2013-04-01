@@ -14,6 +14,7 @@ namespace DragonJsonServer\Service;
  */
 class Clientmessages
 {
+	use \DragonJsonServer\ServiceManagerTrait;
 	use \DragonJsonServer\EventManagerTrait;
 
     /**

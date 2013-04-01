@@ -14,8 +14,6 @@ namespace DragonJsonServer;
  */
 trait EventManagerTrait
 {
-    use \DragonJsonServer\ServiceManagerTrait;
-
 	/**
 	 * @var \Zend\EventManager\EventManager
 	 */

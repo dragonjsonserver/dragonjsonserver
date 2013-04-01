@@ -14,6 +14,7 @@ namespace DragonJsonServer\Service;
  */
 class Server extends \Zend\Json\Server\Server
 {
+	use \DragonJsonServer\ServiceManagerTrait;
     use \DragonJsonServer\EventManagerTrait;
 
     /**
