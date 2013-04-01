@@ -14,7 +14,9 @@ namespace DragonJsonServer\Event;
  */
 class Servicemap extends \Zend\EventManager\Event
 {
-	use \DragonJsonServer\ServiceManagerTrait { getServiceManager as public; }
+	use \DragonJsonServer\ServiceManagerTrait { 
+		getServiceManager as public; 
+	}
 	
     /**
      * @var string
