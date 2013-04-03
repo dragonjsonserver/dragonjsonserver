@@ -20,7 +20,6 @@ return [
     'apiclasses' => [
         '\DragonJsonServer\Api\Application' => 'Application',
     ],
-    'eventlisteners' => [],
 	'service_manager' => [
 		'factories' => [
             'Server' => '\DragonJsonServer\Service\ServerFactory',
@@ -29,4 +28,5 @@ return [
             'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
 		],
 	],
+    'eventlisteners' => [],
 ];
