@@ -16,11 +16,20 @@ class Server extends \Zend\Json\Server\Server
 {
 	use \DragonJsonServer\ServiceManagerTrait;
     use \DragonJsonServer\EventManagerTrait;
+    
+    /**
+     * Gibt die Definitionen der Services zurück
+     * @return \Zend\Server\Definition
+     */
+    public function getTable()
+    {
+    	return $this->table;
+    }
 
     /**
      * Verarbeitet einen JsonRPC Request an den JsonRPC Server
      * @param Request $request
-     * @return Response
+     * @return \DragonJsonServer\Response|null
      */
     public function handle($request = false)
     {
