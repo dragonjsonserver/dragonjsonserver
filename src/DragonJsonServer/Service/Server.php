@@ -18,12 +18,16 @@ class Server extends \Zend\Json\Server\Server
     use \DragonJsonServer\EventManagerTrait;
     
     /**
-     * Gibt die Definitionen der Services zurück
-     * @return \Zend\Server\Definition
+     * Gibt den Klassennamen und Methodennamen zu einer API Methode zurück
+     * @param string $method
+     * @return array
      */
-    public function getTable()
+    public function parseMethod($method)
     {
-    	return $this->table;
+    	$classname = $this->table->getMethod($method)->getCallback()->getClass();
+    	$methodarray = explode('.', $method);
+    	$methodname = array_pop($methodarray);
+    	return [$classname, $methodname];
     }
 
     /**
