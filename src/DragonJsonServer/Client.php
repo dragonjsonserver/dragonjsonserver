@@ -19,7 +19,7 @@ class Client extends \Zend\Json\Server\Client
      * @param string $method
      * @param array $params
      * @return mixed
-     * @throws Exception
+     * @throws \DragonJsonServer\Exception
      */
     public function call($method, $params = [])
     {

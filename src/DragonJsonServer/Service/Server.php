@@ -34,6 +34,7 @@ class Server extends \Zend\Json\Server\Server
      * Verarbeitet einen JsonRPC Request an den JsonRPC Server
      * @param Request $request
      * @return \DragonJsonServer\Response|null
+     * @throws \DragonJsonServer\Exception
      */
     public function handle($request = false)
     {
