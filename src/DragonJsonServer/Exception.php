@@ -34,6 +34,7 @@ class Exception extends \Exception
         $this->getEventManager()->trigger(
         	(new \DragonJsonServer\Event\Exception())
         		->setTarget($this)
+        		->setException($this)
         );
     }
 
