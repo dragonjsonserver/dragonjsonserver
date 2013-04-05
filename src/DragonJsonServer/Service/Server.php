@@ -38,34 +38,40 @@ class Server extends \Zend\Json\Server\Server
      */
     public function handle($request = false)
     {
-        if (!$request) {
-            $request = new \DragonJsonServer\Request();
-        } elseif (!$request instanceof \DragonJsonServer\Request) {
-            throw new \DragonJsonServer\Exception('invalid requestclass', ['requestclass' => get_class($request)]);
-        }
-        $this->getEventManager()->trigger(
-            (new \DragonJsonServer\Event\Request())
-                ->setTarget($this)
-                ->setRequest($request)
-        );
-        $this->setResponse(new \DragonJsonServer\Response());
+    	$response = new \DragonJsonServer\Response();
+        $this->setResponse($response);
         $returnResponse = $this->getReturnResponse();
-        $this->setReturnResponse();
-        $response = parent::handle($request);
-        $this->setReturnResponse($returnResponse);
-        $this->getEventManager()->trigger(
-            (new \DragonJsonServer\Event\Response())
-                ->setTarget($this)
-                ->setRequest($request)
-                ->setResponse($response)
-        );
-        if ($response->isError()) {
-            $error = $response->getError();
-            $data = $error->getData();
-            if ($data instanceof \DragonJsonServer\Exception) {
-                $error->setData($data->getData());
-            }
-        }
+    	try {
+	        if (!$request) {
+	            $request = new \DragonJsonServer\Request();
+	        } elseif (!$request instanceof \DragonJsonServer\Request) {
+	            throw new \DragonJsonServer\Exception('invalid requestclass', ['requestclass' => get_class($request)]);
+	        }
+	        $response->setId($request->getId());
+	        $this->getEventManager()->trigger(
+	            (new \DragonJsonServer\Event\Request())
+	                ->setTarget($this)
+	                ->setRequest($request)
+	        );
+	        $this->setReturnResponse();
+	        parent::handle($request);
+	        $this->setReturnResponse($returnResponse);
+	        $this->getEventManager()->trigger(
+	            (new \DragonJsonServer\Event\Response())
+	                ->setTarget($this)
+	                ->setRequest($request)
+	                ->setResponse($response)
+	        );
+    	} catch (\Exception $exception) {
+    		$this->fault($exception->getMessage(), $exception->getCode(), $exception);
+    	}
+    	if ($response->isError()) {
+    		$error = $response->getError();
+    		$data = $error->getData();
+    		if ($data instanceof \DragonJsonServer\Exception) {
+    			$error->setData($data->getData());
+    		}
+    	}
         if ($returnResponse) {
             return $response;
         }
