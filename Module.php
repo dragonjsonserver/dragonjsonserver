@@ -37,17 +37,4 @@ class Module
             ],
         ];
     }
-
-    /**
-     * Wird beim Bootstrap des Moduls aufgerufen
-     * @param \Zend\Mvc\MvcEvent $event
-     */
-    public function onBootstrap(\Zend\Mvc\MvcEvent $event)
-    {
-    	$serviceManager = $event->getApplication()->getServiceManager();
-    	$sharedEventManager = $serviceManager->get('sharedEventManager');
-    	foreach ($serviceManager->get('Config')['eventlisteners'] as $eventlistener) {
-    		call_user_func_array([$sharedEventManager, 'attach'], $eventlistener);
-    	}
-    }
 }

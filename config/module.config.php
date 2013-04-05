@@ -28,5 +28,4 @@ return [
             'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
 		],
 	],
-    'eventlisteners' => [],
 ];
