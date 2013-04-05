@@ -10,7 +10,7 @@
 namespace DragonJsonServer\Event;
 
 /**
- * Eventklasse für das Event bevor der aktuelle Request verarbeitet wird
+ * Eventklasse für das Event wenn eine Ausnahme erstellt wird
  */
 class Exception extends \Zend\EventManager\Event
 {
