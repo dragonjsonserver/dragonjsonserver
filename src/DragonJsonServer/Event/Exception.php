@@ -14,10 +14,6 @@ namespace DragonJsonServer\Event;
  */
 class Exception extends \Zend\EventManager\Event
 {
-	use \DragonJsonServer\ServiceManagerTrait { 
-		getServiceManager as public; 
-	}
-	
     /**
      * @var string
      */
