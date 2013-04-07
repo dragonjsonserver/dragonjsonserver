@@ -26,7 +26,7 @@ class Server extends \Zend\Json\Server\Server
     {
     	$definition = $this->table->getMethod($method);
     	if (!$definition) {
-    		throw new \DragonJsonServer\Exception('invalid method'); 
+    		throw new \DragonJsonServer\Exception('invalid method', ['method' => $method]); 
     	}
     	$classname = $definition->getCallback()->getClass();
     	$methodarray = explode('.', $method);
