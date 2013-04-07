@@ -25,7 +25,7 @@ class Request extends \Zend\Json\Server\Request\Http
      */
     public function __construct(array $options = null)
     {
-        if (isset($options)) {
+        if (null !== $options) {
             $this->setOptions($options);
         } else {
             parent::__construct();

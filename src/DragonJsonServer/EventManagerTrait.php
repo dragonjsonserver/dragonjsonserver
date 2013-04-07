@@ -25,7 +25,7 @@ trait EventManagerTrait
      */
     protected function getEventManager()
     {
-    	if (!isset($this->eventManager)) {
+    	if (null === $this->eventManager) {
     		$this->eventManager = $this->getServiceManager()->get('eventManager')
     		    ->setIdentifiers(__CLASS__);
     	}

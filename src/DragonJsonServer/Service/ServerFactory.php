@@ -23,7 +23,7 @@ class ServerFactory implements \Zend\ServiceManager\FactoryInterface
     {
     	$server = new \DragonJsonServer\Service\Server();
     	$config = $serviceLocator->get('Config');
-    	if (!isset($config['apicachefile']) || !\Zend\Server\Cache::get($config['apicachefile'], $server)) {
+    	if (null === $config['apicachefile'] || !\Zend\Server\Cache::get($config['apicachefile'], $server)) {
     		foreach ($config['apiclasses'] as $class => $namespace) {
     			if (is_integer($class)) {
     				$class = $namespace;
@@ -31,7 +31,7 @@ class ServerFactory implements \Zend\ServiceManager\FactoryInterface
     			}
     			$server->setClass($class, $namespace);
     		}
-    		if (isset($config['apicachefile'])) {
+    		if (null !== $config['apicachefile']) {
     			\Zend\Server\Cache::save($config['apicachefile'], $server);
     		}
     	}

@@ -24,7 +24,11 @@ class Server extends \Zend\Json\Server\Server
      */
     public function parseMethod($method)
     {
-    	$classname = $this->table->getMethod($method)->getCallback()->getClass();
+    	$definition = $this->table->getMethod($method);
+    	if (!$definition) {
+    		throw new \DragonJsonServer\Exception('invalid method'); 
+    	}
+    	$classname = $definition->getCallback()->getClass();
     	$methodarray = explode('.', $method);
     	$methodname = array_pop($methodarray);
     	return [$classname, $methodname];
@@ -93,7 +97,7 @@ class Server extends \Zend\Json\Server\Server
         if (!headers_sent()) {
             header('Content-Type: application/json');
         }
-        if (!isset($requests) && 'GET' == $_SERVER['REQUEST_METHOD']) {
+        if (null === $requests && 'GET' == $_SERVER['REQUEST_METHOD']) {
             $servicemap = $this
                 ->getServiceMap()
                 ->setEnvelope(\Zend\Json\Server\Smd::ENV_JSONRPC_2);
@@ -107,7 +111,7 @@ class Server extends \Zend\Json\Server\Server
 	        }
 	        echo $servicemap;
         } else {
-            if (!isset($requests)) {
+            if (null === $requests) {
                 $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
             }
             $data = [];
