@@ -1,6 +1,6 @@
 {
     "name": "dragonprojects/dragonjsonserver",
-    "description": "Library for JsonRPC 2 APIs based on Zend Framework 2",
+    "description": "Framework für JsonRPC 2 APIs mit Zend Framework 2",
     "license": "BSD-3-Clause",
     "authors": [
         {
