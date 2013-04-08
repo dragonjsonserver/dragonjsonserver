@@ -92,7 +92,6 @@ class Server extends \Zend\Json\Server\Server
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Bootstrap())
                 ->setTarget($this)
-                ->setServiceServer($this)
         );
         if (!headers_sent()) {
             header('Content-Type: application/json');

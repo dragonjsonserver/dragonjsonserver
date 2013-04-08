@@ -48,7 +48,6 @@ class Clientmessages
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Clientmessages())
                 ->setTarget($this)
-                ->setServiceClientmessages($this)
                 ->setFrom($from)
                 ->setTo($to)
         );

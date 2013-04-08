@@ -20,26 +20,6 @@ class Clientmessages extends \Zend\EventManager\Event
     protected $name = 'clientmessages';
 
     /**
-     * Setzt den Service für das Sammeln der Clientmessages
-     * @param \DragonJsonServer\Service\Clientmessages $serviceClientmessages
-     * @return Clientmessages
-     */
-    public function setServiceClientmessages(\DragonJsonServer\Service\Clientmessages $serviceClientmessages)
-    {
-        $this->setParam('serviceClientmessages', $serviceClientmessages);
-        return $this;
-    }
-
-    /**
-     * Gibt den Service für das Sammeln der Clientmessages zurück
-     * @return \DragonJsonServer\Service\Clientmessages
-     */
-    public function getServiceClientmessages()
-    {
-        return $this->getParam('serviceClientmessages');
-    }
-
-    /**
      * Setzt den Anfangszeitpunkt für das Laden der Clientmessages
      * @param integer $from
      * @return Clientmessages

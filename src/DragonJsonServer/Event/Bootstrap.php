@@ -18,24 +18,4 @@ class Bootstrap extends \Zend\EventManager\Event
 	 * @var string
 	 */
 	protected $name = 'bootstrap';
-
-    /**
-     * Setzt den Service des Servers der initialisiert wurde
-     * @param \DragonJsonServer\Service\Server $serviceServer
-     * @return Bootstrap
-     */
-    public function setServiceServer(\DragonJsonServer\Service\Server $serviceServer)
-    {
-        $this->setParam('serviceServer', $serviceServer);
-        return $this;
-    }
-
-    /**
-     * Gibt den Service des Servers der initialisiert wurde zurück
-     * @return \DragonJsonServer\Service\Server
-     */
-    public function getServiceServer()
-    {
-        return $this->getParam('serviceServer');
-    }
 }
