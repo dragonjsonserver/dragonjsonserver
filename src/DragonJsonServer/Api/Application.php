@@ -28,6 +28,6 @@ class Application
      */
     public function getApplication()
     {
-        return $this->getServiceManager()->get('Config')['application'];
+        return $this->getServiceManager()->get('Config')['dragonjsonserver']['application'];
     }
 }

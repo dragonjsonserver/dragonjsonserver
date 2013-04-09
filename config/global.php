@@ -14,14 +14,16 @@
  * re
  */
 return [
-    'application' => [
-    	'name' => '%name%',
-    	'version' => '%version%',
-    	'copyright' => '%copyright%',
-    ],
-    'apicachefile' => '%filepath%',
-    'apiclasses' => [
-		'%classname%' => '%namespace%', 
-		'%classname%' => '%namespace%', 
+	'dragonjsonserver' => [
+	    'application' => [
+	    	'name' => '%name%',
+	    	'version' => '%version%',
+	    	'copyright' => '%copyright%',
+	    ],
+	    'apicachefile' => '%filepath%',
+	    'apiclasses' => [
+			'%classname%' => '%namespace%', 
+			'%classname%' => '%namespace%', 
+	    ],
     ],
 ];

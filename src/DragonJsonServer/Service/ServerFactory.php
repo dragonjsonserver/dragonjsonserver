@@ -22,7 +22,7 @@ class ServerFactory implements \Zend\ServiceManager\FactoryInterface
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
     {
     	$server = new \DragonJsonServer\Service\Server();
-    	$config = $serviceLocator->get('Config');
+    	$config = $serviceLocator->get('Config')['dragonjsonserver'];
     	if (null === $config['apicachefile'] || !\Zend\Server\Cache::get($config['apicachefile'], $server)) {
     		foreach ($config['apiclasses'] as $class => $namespace) {
     			if (is_integer($class)) {
