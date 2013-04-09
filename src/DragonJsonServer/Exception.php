@@ -14,9 +14,6 @@ namespace DragonJsonServer;
  */
 class Exception extends \Exception
 {
-	use \DragonJsonServer\ServiceManagerTrait;
-    use \DragonJsonServer\EventManagerTrait;
-    
     /**
      * @var array
      */
@@ -31,11 +28,6 @@ class Exception extends \Exception
     {
         parent::__construct($message);
         $this->setData($data);
-        $this->getEventManager()->trigger(
-        	(new \DragonJsonServer\Event\Exception())
-        		->setTarget($this)
-        		->setException($this)
-        );
     }
 
     /**

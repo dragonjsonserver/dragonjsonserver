@@ -10,7 +10,7 @@
 namespace DragonJsonServer\Event;
 
 /**
- * Eventklasse für das Event wenn eine Ausnahme erstellt wird
+ * Eventklasse für das Event wenn eine Ausnahme für den CLient geworfen wird
  */
 class Exception extends \Zend\EventManager\Event
 {
@@ -20,19 +20,19 @@ class Exception extends \Zend\EventManager\Event
     protected $name = 'exception';
 
     /**
-     * Setzt die Ausnahme die erstellt wurde
-     * @param \DragonJsonServer\Exception $exception
+     * Setzt die Ausnahme die für den CLient geworfen wurde
+     * @param \Exception $exception
      * @return Exception
      */
-    public function setException(\DragonJsonServer\Exception $exception)
+    public function setException(\Exception $exception)
     {
         $this->setParam('exception', $exception);
         return $this;
     }
 
     /**
-     * Gibt die Ausnahme die erstellt wurde zurück
-     * @return \DragonJsonServer\Exception
+     * Gibt die Ausnahme die für den CLient geworfen wurde zurück
+     * @return \Exception
      */
     public function getException()
     {
