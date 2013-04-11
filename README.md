@@ -1,4 +1,4 @@
-dragonjsonserver
+DragonJsonServer
 ================
 
 Framework für JsonRPC 2 APIs mit Zend Framework 2.
