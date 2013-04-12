@@ -1,7 +1,7 @@
 DragonJsonServer
 ================
 
-Framework für JsonRPC 2 APIs mit Zend Framework 2.
+PHP Framework für JsonRPC 2 APIs mit Zend Framework 2.
 
 ## Installation
 
