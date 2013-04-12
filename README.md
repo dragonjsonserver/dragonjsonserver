@@ -1,5 +1,5 @@
-DragonJsonServer
-================
+DragonJsonServer 2.x
+====================
 
 PHP Framework für JsonRPC 2 APIs mit Zend Framework 2.
 
