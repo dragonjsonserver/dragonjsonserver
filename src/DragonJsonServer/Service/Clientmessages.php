@@ -48,8 +48,8 @@ class Clientmessages
         $this->getEventManager()->trigger(
             (new \DragonJsonServer\Event\Clientmessages())
                 ->setTarget($this)
-                ->setFrom($from)
-                ->setTo($to)
+                ->setFromTimestamp($from)
+                ->setToTimestamp($to)
         );
         return $this;
     }

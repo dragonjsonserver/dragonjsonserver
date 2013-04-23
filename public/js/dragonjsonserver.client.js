@@ -22,7 +22,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     var clientoptions = clientoptions || {};
     var id = 0;
     var clientmessage = {
-        from: new Date().getTime(),
+        from: parseInt(new Date().getTime() / 1000),
         callbacks: {},
     };
     var defaultparams = {};
@@ -73,7 +73,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
             requests.params = $.extend({}, defaultparams, requests.params);
             data = requests.toArray();
         }
-        var to = new Date().getTime();
+        var to = parseInt(new Date().getTime() / 1000);
         $.extend(data, {clientmessages: {from: clientmessage.from, to: to}});
         clientmessage.from = to;
         $.ajax($.extend({
