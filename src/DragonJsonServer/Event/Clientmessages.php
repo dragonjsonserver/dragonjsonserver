@@ -20,17 +20,6 @@ class Clientmessages extends \Zend\EventManager\Event
     protected $name = 'clientmessages';
 
     /**
-     * Setzt den Anfangszeitpunkt der Clientmessages als Unix Timestamp
-     * @param integer $from
-     * @return Clientmessages
-     */
-    public function setFromTimestamp($from)
-    {
-        $this->setFrom((new \DateTime())->setTimestamp($from));
-        return $this;
-    }
-
-    /**
      * Setzt den Anfangszeitpunkt für das Laden der Clientmessages
      * @param \DateTime $from
      * @return Clientmessages
@@ -38,6 +27,17 @@ class Clientmessages extends \Zend\EventManager\Event
     public function setFrom(\DateTime $from)
     {
         $this->setParam('from', $from);
+        return $this;
+    }
+
+    /**
+     * Setzt den Anfangszeitpunkt der Clientmessages als Unix Timestamp
+     * @param integer $from
+     * @return Clientmessages
+     */
+    public function setFromTimestamp($from)
+    {
+        $this->setFrom((new \DateTime())->setTimestamp($from));
         return $this;
     }
 
@@ -51,17 +51,6 @@ class Clientmessages extends \Zend\EventManager\Event
     }
 
     /**
-     * Setzt den Endzeitpunkt der Clientmessages als Unix Timestamp
-     * @param integer $to
-     * @return Clientmessages
-     */
-    public function setToTimestamp($to)
-    {
-        $this->setTo((new \DateTime())->setTimestamp($to));
-        return $this;
-    }
-
-    /**
      * Setzt den Endzeitpunkt für das Laden der Clientmessages
      * @param \DateTime $to
      * @return Clientmessages
@@ -69,6 +58,17 @@ class Clientmessages extends \Zend\EventManager\Event
     public function setTo(\DateTime $to)
     {
         $this->setParam('to', $to);
+        return $this;
+    }
+
+    /**
+     * Setzt den Endzeitpunkt der Clientmessages als Unix Timestamp
+     * @param integer $to
+     * @return Clientmessages
+     */
+    public function setToTimestamp($to)
+    {
+        $this->setTo((new \DateTime())->setTimestamp($to));
         return $this;
     }
 
