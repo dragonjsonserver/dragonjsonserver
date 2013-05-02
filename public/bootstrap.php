@@ -7,5 +7,8 @@
  * @package DragonJsonServer
  */
 
-require 'bootstrap.php';
-$serviceManager->get('Server')->run();
+chdir(dirname(__DIR__));
+require 'init_autoloader.php';
+$serviceManager = \Zend\Mvc\Application::init(
+    require 'config/application.config.php'
+)->getServiceManager();
