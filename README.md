@@ -3,6 +3,9 @@ DragonJsonServer 2.x
 
 PHP Framework für JsonRPC 2 APIs mit Zend Framework 2.
 
+## Live Demo
+http://2x.dragonjsonserver.de/
+
 ## Installation
 
 1. Git installieren, siehe: http://git-scm.com/
