@@ -14,7 +14,7 @@ return [
 	'dragonjsonserver' => [
 	    'application' => [
 	        'name' => 'DragonJsonServer',
-	        'version' => 'v2.0.0',
+	        'version' => '2.x',
 	        'copyright' => 'Copyright (c) 2012-2013 DragonProjects (http://dragonprojects.de/)',
 	    ],
 	    'apicachefile' => null,
