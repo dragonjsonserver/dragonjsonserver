@@ -7,7 +7,7 @@ PHP Framework für JsonRPC 2 APIs mit Zend Framework 2.
 http://2x.dragonjsonserver.de/
 
 ### Bedienung
-1. Namenraum und Methode auswählen
+1. Namensraum und Methode auswählen
 2. Wenn benötigt Argumente eingeben
 3. Anfrage senden und Ausgabe anschauen
 
