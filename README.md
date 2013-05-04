@@ -6,6 +6,16 @@ PHP Framework für JsonRPC 2 APIs mit Zend Framework 2.
 ## Live Demo
 http://2x.dragonjsonserver.de/
 
+### Bedienung
+1. Namenraum und Methode auswählen
+2. Wenn benötigt Argumente eingeben
+3. Anfrage senden und Ausgabe anschauen
+
+### Erste Schritte
+1. Account.createAccount: Erstellt einen neuen Account und gibt die Session zurück
+2. Avatar.createAvatar: Erstellt einen Avatar für die Spielrunde (gameround_id 1 ist vorhanden)
+3. Avatarmessage.createAvatarmessage: Erstellt eine Nachricht zu einem anderen Avatar (to_avatar_id 1 ist vorhanden)
+
 ## Installation
 
 1. Git installieren, siehe: http://git-scm.com/
@@ -22,7 +32,7 @@ http://2x.dragonjsonserver.de/
 
 Für alle Erweiterungen die aktualisiert wurden:
 
-1.1. Wenn vorhanden Dateien von "/vendor/dragonprojects/%packagename%/public" in das "/public" Verzeichnis kopieren
+1. Wenn vorhanden Dateien von "/vendor/dragonprojects/%packagename%/public" in das "/public" Verzeichnis kopieren
 
 ## Erweiterungen
 Verfügbare Erweiterungen: http://packagist.org/packages/dragonprojects/
