@@ -17,7 +17,7 @@ class Response extends \Zend\EventManager\Event
     /**
      * @var string
      */
-    protected $name = 'response';
+    protected $name = 'Response';
 
     /**
      * Setzt das Requestobjekt des aktuellen JsonRPC Request

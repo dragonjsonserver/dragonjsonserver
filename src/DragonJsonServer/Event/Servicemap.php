@@ -17,7 +17,7 @@ class Servicemap extends \Zend\EventManager\Event
     /**
      * @var string
      */
-    protected $name = 'servicemap';
+    protected $name = 'Servicemap';
 
     /**
      * Setzt das Servicemapobjekt des aktuellen JsonRPC Servers

@@ -17,7 +17,7 @@ class Clientmessages extends \Zend\EventManager\Event
     /**
      * @var string
      */
-    protected $name = 'clientmessages';
+    protected $name = 'Clientmessages';
 
     /**
      * Setzt den Anfangszeitpunkt für das Laden der Clientmessages

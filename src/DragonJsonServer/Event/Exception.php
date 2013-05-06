@@ -17,7 +17,7 @@ class Exception extends \Zend\EventManager\Event
     /**
      * @var string
      */
-    protected $name = 'exception';
+    protected $name = 'Exception';
 
     /**
      * Setzt die Ausnahme die für den CLient geworfen wurde

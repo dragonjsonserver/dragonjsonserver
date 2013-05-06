@@ -17,5 +17,5 @@ class Bootstrap extends \Zend\EventManager\Event
 	/**
 	 * @var string
 	 */
-	protected $name = 'bootstrap';
+	protected $name = 'Bootstrap';
 }
