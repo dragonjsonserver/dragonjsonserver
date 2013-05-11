@@ -10,9 +10,6 @@
 /**
  * @return array
  */
-/*
- * re
- */
 return [
 	'dragonjsonserver' => [
 	    'application' => [
