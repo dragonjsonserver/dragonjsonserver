@@ -26,7 +26,7 @@ class Client extends \Zend\Json\Server\Client
         $response = $this->doRequest($this->createRequest($method, $params));
         if ($response->isError()) {
             $error = $response->getError();
-            throw new \DragonJsonServer\Exception($error->getMessage(), $error->getCode(), $error->getData());
+            throw new \DragonJsonServer\Exception($error->getMessage(), $error->getData());
         }
         return $response->getResult();
     }
