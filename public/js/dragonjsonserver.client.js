@@ -45,7 +45,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
      * @param mixed value
      * @return Client
      */
-    this.setDefaultParam = function (key, value) 
+    this.setDefaultparam = function (key, value) 
     {
         defaultparams[key] = value;
         return this;

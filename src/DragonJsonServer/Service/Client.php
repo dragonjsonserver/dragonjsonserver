@@ -14,6 +14,23 @@ namespace DragonJsonServer\Service;
  */
 class Client extends \Zend\Json\Server\Client
 {
+	/**
+	 * @var array
+	 */
+	protected $defaultparams = [];
+
+	/**
+	 * Setzt einen Defaultparameter für jeden Request
+	 * @param string $key
+	 * @param mixed $value
+	 * @return Client
+	 */
+	public function setDefaultparam($key, $value)
+	{
+		$this->defaultparams[$key] = $value;
+		return $this;
+	}
+	
     /**
      * Macht einen Request zum Server und gibt das Ergebnis zurück
      * @param string $method
@@ -23,7 +40,7 @@ class Client extends \Zend\Json\Server\Client
      */
     public function call($method, $params = [])
     {
-        $response = $this->doRequest($this->createRequest($method, $params));
+        $response = $this->doRequest($this->createRequest($method, $params + $this->defaultparams));
         if ($response->isError()) {
             $error = $response->getError();
             throw new \DragonJsonServer\Exception($error->getMessage(), $error->getData());
