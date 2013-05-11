@@ -7,7 +7,7 @@
  * @package DragonJsonServer
  */
 
-namespace DragonJsonServer;
+namespace DragonJsonServer\Service;
 
 /**
  * Erweiterte Klasse für einen JsonRPC Client
