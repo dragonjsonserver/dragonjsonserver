@@ -21,7 +21,7 @@ return [
 	    'apiclasses' => [
 	        '\DragonJsonServer\Api\Application' => 'Application',
 	    ],
-	    'server' => (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+	    'server' => (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . '/jsonrpc2.php',
 	],
 	'service_manager' => [
 		'factories' => [
