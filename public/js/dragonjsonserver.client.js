@@ -145,8 +145,8 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
      */
     this.smd = function (sendoptions) {
         $.ajax($.extend({
-            url : serverurl,
-            dataType : 'json',
+            url: serverurl,
+            dataType: 'json',
         }, clientoptions, sendoptions));
         return this;
     }
