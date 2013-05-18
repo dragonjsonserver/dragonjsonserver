@@ -8,4 +8,4 @@
  */
 
 require 'bootstrap.php';
-$serviceManager->get('Server')->run();
+$serviceManager->get('\DragonJsonServer\Service\Server')->run();

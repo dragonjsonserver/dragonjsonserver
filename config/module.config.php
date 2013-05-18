@@ -25,11 +25,11 @@ return [
 	],
 	'service_manager' => [
 		'factories' => [
-            'Client' => '\DragonJsonServer\Service\ClientFactory',
-            'Server' => '\DragonJsonServer\Service\ServerFactory',
+            '\DragonJsonServer\Service\Client' => '\DragonJsonServer\Service\ClientFactory',
+            '\DragonJsonServer\Service\Server' => '\DragonJsonServer\Service\ServerFactory',
 		],
 		'invokables' => [
-            'Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
+            '\DragonJsonServer\Service\Clientmessages' => '\DragonJsonServer\Service\Clientmessages',
 		],
 	],
 ];

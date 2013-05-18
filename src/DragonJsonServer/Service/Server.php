@@ -151,7 +151,7 @@ class Server extends \Zend\Json\Server\Server
             if (isset($requests['clientmessages'])) {
             	$clientmessages = $requests['clientmessages'];
             	if (isset($clientmessages['from']) && isset($clientmessages['to'])) {
-            		$clientmessages = $this->getServiceManager()->get('Clientmessages')
+            		$clientmessages = $this->getServiceManager()->get('\DragonJsonServer\Service\Clientmessages')
                         ->collectClientmessages($clientmessages['from'], $clientmessages['to'])
 	                    ->getClientmessages();
             		if (count($clientmessages) > 0) {
