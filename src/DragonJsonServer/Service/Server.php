@@ -108,7 +108,8 @@ class Server extends \Zend\Json\Server\Server
             (new \DragonJsonServer\Event\Bootstrap())
                 ->setTarget($this)
         );
-        if (!headers_sent()) {
+        $returnResponse = $this->getReturnResponse();
+        if ($returnResponse && !headers_sent()) {
             header('Content-Type: application/json');
         }
         if (null === $requests && 'GET' == $_SERVER['REQUEST_METHOD']) {
@@ -120,7 +121,7 @@ class Server extends \Zend\Json\Server\Server
                     ->setTarget($this)
                     ->setServicemap($servicemap)
             );
-	        if ($this->getReturnResponse()) {
+	        if ($returnResponse) {
 	            return $servicemap;
 	        }
 	        echo $servicemap;
@@ -129,7 +130,6 @@ class Server extends \Zend\Json\Server\Server
                 $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
             }
             $data = [];
-        	$returnResponse = $this->getReturnResponse();
             $this->setReturnResponse();
             if (isset($requests['requests']) && is_array($requests['requests'])) {
                 $responses = [];
