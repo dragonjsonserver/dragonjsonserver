@@ -109,7 +109,7 @@ class Server extends \Zend\Json\Server\Server
                 ->setTarget($this)
         );
         $returnResponse = $this->getReturnResponse();
-        if ($returnResponse && !headers_sent()) {
+        if (!$returnResponse && !headers_sent()) {
             header('Content-Type: application/json');
         }
         if (null === $requests && 'GET' == $_SERVER['REQUEST_METHOD']) {
