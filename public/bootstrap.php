@@ -10,7 +10,22 @@
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 chdir(dirname(__DIR__));
-require 'init_autoloader.php';
+
+if (is_file('vendor/autoload.php')) {
+	$loader = require 'vendor/autoload.php';
+}
+$zf2path = getenv('ZF2_PATH');
+if ($zf2path) {
+	if (isset($loader)) {
+		$loader->add('Zend', $zf2path);
+	} else {
+		require $zf2path . '/Zend/Loader/AutoloaderFactory.php';
+		Zend\Loader\AutoloaderFactory::factory(array(
+			'Zend\Loader\StandardAutoloader' => array('autoregister_zf' => true),
+		));
+	}
+}
+
 $serviceManager = \Zend\Mvc\Application::init(
     require 'config/application.config.php'
 )->getServiceManager();
