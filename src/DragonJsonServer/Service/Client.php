@@ -20,7 +20,7 @@ class Client extends \Zend\Json\Server\Client
 	protected $defaultparams = [];
 
 	/**
-	 * Setzt einen Defaultparameter für jeden Request
+	 * Setzt den Defaultparameter für jeden Request
 	 * @param string $key
 	 * @param mixed $value
 	 * @return Client
@@ -29,6 +29,28 @@ class Client extends \Zend\Json\Server\Client
 	{
 		$this->defaultparams[$key] = $value;
 		return $this;
+	}
+
+	/**
+	 * Gibt den Defaultparameter für jeden Request zurück
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getDefaultparam($key)
+	{
+		if (!isset($this->defaultparams[$key])) {
+			return;
+		}
+		return $this->defaultparams[$key];
+	}
+
+	/**
+	 * Gibt die Defaultparameter für jeden Request zurück
+	 * @return array
+	 */
+	public function getDefaultparams()
+	{
+		return $this->defaultparams;
 	}
 	
     /**
@@ -40,7 +62,7 @@ class Client extends \Zend\Json\Server\Client
      */
     public function call($method, $params = [])
     {
-        $response = $this->doRequest($this->createRequest($method, $params + $this->defaultparams));
+        $response = $this->doRequest($this->createRequest($method, $params + $this->getDefaultparams()));
         if ($response->isError()) {
             $error = $response->getError();
             throw new \DragonJsonServer\Exception($error->getMessage(), $error->getData());
