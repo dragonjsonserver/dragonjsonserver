@@ -32,6 +32,17 @@ class Client extends \Zend\Json\Server\Client
 	}
 
 	/**
+	 * Entfernt den Defaultparameter für jeden Request
+	 * @param string $key
+	 * @return Client
+	 */
+	public function removeDefaultparam($key)
+	{
+		unset($this->defaultparams[$key]);
+		return $this;
+	}
+
+	/**
 	 * Gibt den Defaultparameter für jeden Request zurück
 	 * @param string $key
 	 * @return mixed
