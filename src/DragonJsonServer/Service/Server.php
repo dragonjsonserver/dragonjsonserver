@@ -94,7 +94,7 @@ class Server extends \Zend\Json\Server\Server
         if ($returnResponse) {
             return $response;
         }
-        echo $response;
+        $this->display($response);
     }
 
     /**
@@ -112,6 +112,9 @@ class Server extends \Zend\Json\Server\Server
         if (!$returnResponse && !headers_sent()) {
             header('Content-Type: application/json');
         }
+        if (isset($_GET['requests']) || isset($_GET['method'])) {
+            $requests = $_GET;
+        }
         if (null === $requests && 'GET' == $_SERVER['REQUEST_METHOD']) {
             $servicemap = $this
                 ->getServiceMap()
@@ -124,7 +127,7 @@ class Server extends \Zend\Json\Server\Server
 	        if ($returnResponse) {
 	            return $servicemap;
 	        }
-	        echo $servicemap;
+	        $this->display($servicemap);
         } else {
             if (null === $requests) {
                 $requests = \Zend\Json\Decoder::decode(file_get_contents('php://input'), \Zend\Json\Json::TYPE_ARRAY);
@@ -163,7 +166,21 @@ class Server extends \Zend\Json\Server\Server
 	        if ($returnResponse) {
 	            return $data;
 	        }
-            echo \Zend\Json\Encoder::encode($data);
+            $this->display(\Zend\Json\Encoder::encode($data));
+        }
+    }
+
+    /**
+     * Gibt die Ausgabe aus und dekoriert sie bei einem JsonP Request
+     * @param string $output
+     * @return Server
+     */
+    public function display($output)
+    {
+        if (isset($_GET['callback'])) {
+            echo $_GET['callback'] . '(' . $output . ');';
+        } else {
+            echo $output;
         }
     }
 }

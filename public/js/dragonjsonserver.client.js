@@ -26,6 +26,22 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
         callbacks: {},
     };
     var defaultparams = {};
+
+    var ajaxoptions = { url: serverurl };
+    var stringify;
+    if (URI().domain() == URI(serverurl).domain()) {
+        $.extend(ajaxoptions, {
+            type: 'POST',
+            dataType: 'json'
+        });
+        stringify = true;
+    } else {
+        $.extend(ajaxoptions, {
+            type: 'GET',
+            dataType: 'jsonp'
+        });
+        stringify = false;
+    }
     
     /**
      * Setzt eine Callbackmethode für Clientmessages
@@ -76,12 +92,10 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
         var to = parseInt(new Date().getTime() / 1000);
         $.extend(data, {clientmessages: {from: clientmessage.from, to: to}});
         clientmessage.from = to;
-        $.ajax($.extend({
-            url: serverurl,
-            type: 'POST',
-            dataType: 'json',
-            data: JSON.stringify(data),
-        }, clientoptions, sendoptions, {
+        if (stringify) {
+            data = JSON.stringify(data);
+        }
+        $.ajax($.extend({data: data}, ajaxoptions, clientoptions, sendoptions, {
             success: function (json, statusText, jqXHR) {
                 if (undefined != json.clientmessages) {
                     $.each(json.clientmessages, function (key, clientmessages) {
@@ -144,10 +158,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
      * @return Client
      */
     this.smd = function (sendoptions) {
-        $.ajax($.extend({
-            url: serverurl,
-            dataType: 'json',
-        }, clientoptions, sendoptions));
+        $.ajax($.extend({}, ajaxoptions, {type: 'GET'}, clientoptions, sendoptions));
         return this;
     }
 };
