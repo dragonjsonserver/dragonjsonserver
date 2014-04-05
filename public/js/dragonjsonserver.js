@@ -7,8 +7,37 @@
  */
 
 if ('undefined' == typeof DragonJsonServer) {
-	DragonJsonServer = {};
+    DragonJsonServer = {};
 }
+
+/**
+ * Erstellt einen neuen Request mit den übergebenen Daten
+ * @param string method
+ * @param object params
+ * @param function result
+ * @param function exception
+ * @constructor
+ */
+DragonJsonServer.Request = function (method, params, result, exception)
+{
+    this.id;
+    this.method = method;
+    this.params = params || {};
+    this.result = result || function () {};
+    this.exception = exception;
+
+    /**
+     * Gibt die Daten des Requests zum Senden an den Server zurück
+     * @return object
+     */
+    this.toArray = function () {
+        return {
+            id: this.id,
+            method: this.method,
+            params: this.params
+        };
+    };
+};
 
 /**
  * Erstellt einen neuen Client mit den übergebenen Daten
@@ -23,11 +52,11 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     var id = 0;
     var clientmessage = {
         from: parseInt(new Date().getTime() / 1000),
-        callbacks: {},
+        callbacks: {}
     };
     var defaultparams = {};
 
-    var ajaxoptions = { url: serverurl };
+    var ajaxoptions = {url: serverurl};
     var stringify;
     if (URI().domain() == URI(serverurl).domain()) {
         $.extend(ajaxoptions, {
@@ -42,38 +71,38 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
         });
         stringify = false;
     }
-    
+
     /**
      * Setzt eine Callbackmethode für Clientmessages
      * @param string key
      * @param function callback
      * @return Client
      */
-    this.setClientmessageCallback = function (key, callback) 
+    this.setClientmessageCallback = function (key, callback)
     {
         clientmessage.callbacks[key] = callback;
         return this;
     };
-    
+
     /**
      * Setzt einen Defaultparameter für jeden Request
      * @param string key
      * @param mixed value
      * @return Client
      */
-    this.setDefaultparam = function (key, value) 
+    this.setDefaultparam = function (key, value)
     {
         defaultparams[key] = value;
         return this;
     };
-    
+
     /**
      * Sendet einen Request zum Server mit den übergebenen Daten
      * @param DragonJsonServer.Request|array requests
      * @param object sendoptions
      * @return Client
      */
-    this.send = function (requests, sendoptions) 
+    this.send = function (requests, sendoptions)
     {
         sendoptions = sendoptions || {};
         var data;
@@ -139,8 +168,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                     clientoptions.success(json, statusText, jqXHR, requests);
                 }
             },
-            error: function (jqXHR, statusText, errorThrown)
-            {
+            error: function (jqXHR, statusText, errorThrown) {
                 if (undefined != sendoptions.error) {
                     sendoptions.error(jqXHR, statusText, errorThrown, requests);
                 } else if (undefined != clientoptions.error) {
@@ -151,7 +179,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
         }));
         return this;
     };
-    
+
     /**
      * Sendet eine Anfrage für die SMD zum Server
      * @param object sendoptions
