@@ -12,15 +12,6 @@
  */
 return [
 	'dragonjsonserver' => [
-	    'application' => [
-	    	'name' => '%name%',
-	    	'version' => '%version%',
-	    	'copyright' => '%copyright%',
-	    ],
-	    'apiclasses' => [
-			'%classname%' => '%namespace%', 
-			'%classname%' => '%namespace%', 
-	    ],
-	    'server' => '%server%',
+	    'apicachefile' => '%filepath%',
     ],
 ];
