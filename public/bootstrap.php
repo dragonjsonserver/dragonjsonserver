@@ -21,7 +21,7 @@ if ($zf2path) {
 		$loader->add('Zend', $zf2path);
 	} else {
 		require $zf2path . '/Zend/Loader/AutoloaderFactory.php';
-		Zend\Loader\AutoloaderFactory::factory([
+        \Zend\Loader\AutoloaderFactory::factory([
 			'Zend\Loader\StandardAutoloader' => ['autoregister_zf' => true],
 		]);
 	}
