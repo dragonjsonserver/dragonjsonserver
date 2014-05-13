@@ -1,0 +1,6 @@
+{
+    "name" : "dragonjsonserver",
+    "dependencies" : {
+        "uri.js" : "latest"
+    }
+}
