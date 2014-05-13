@@ -1,5 +1,16 @@
 {
     "name" : "dragonjsonserver",
+    "ignore" : [
+        "config",
+        "public/.gitignore",
+        "public/bootstrap.php",
+        "public/jsonrpc2.php",
+        "src",
+        ".bowerrc",
+        "composer.json",
+        "Module.php",
+        "README.md"
+    ],
     "dependencies" : {
         "uri.js" : "latest"
     }
