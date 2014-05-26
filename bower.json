@@ -12,6 +12,7 @@
         "README.md"
     ],
     "dependencies" : {
+        "jquery" : "latest",
         "uri.js" : "latest"
     }
 }
