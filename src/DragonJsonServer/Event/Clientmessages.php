@@ -80,4 +80,24 @@ class Clientmessages extends \Zend\EventManager\Event
     {
         return $this->getParam('to');
     }
+
+    /**
+     * Setzt die Auswahl an Keys die der Client abfragt
+     * @param boolean|array $keys
+     * @return Clientmessages
+     */
+    public function setKeys($keys)
+    {
+        $this->setParam('keys', $keys);
+        return $this;
+    }
+
+    /**
+     * Gibt die Auswahl an Keys die der Client abfragt zurück
+     * @return boolean|array
+     */
+    public function getKeys()
+    {
+        return $this->getParam('keys');
+    }
 }

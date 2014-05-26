@@ -17,14 +17,31 @@ if ('undefined' == typeof DragonJsonServer) {
  * @param function result
  * @param function exception
  * @constructor
+ * @example
+ var method = 'Application.ping';
+ var params = {};
+ var result = function (result) {};
+ var exception = function (exception) {};
+
+ var request = DragonJsonServer.Request(method);
+ var request = DragonJsonServer.Request(method, params);
+ var request = DragonJsonServer.Request(method, params, result);
+ var request = DragonJsonServer.Request(method, params, result, exception);
+ var request = DragonJsonServer.Request(method, result);
+ var request = DragonJsonServer.Request(method, result, exception);
  */
 DragonJsonServer.Request = function (method, params, result, exception)
 {
-    this.id;
     this.method = method;
-    this.params = params || {};
-    this.result = result || function () {};
-    this.exception = exception;
+    if (typeof params == 'function') {
+        this.exception = result;
+        this.result = params;
+        this.params = {};
+    } else {
+        this.params = params || {};
+        this.result = result;
+        this.exception = exception;
+    }
 
     /**
      * Gibt die Daten des Requests zum Senden an den Server zurück
@@ -44,6 +61,16 @@ DragonJsonServer.Request = function (method, params, result, exception)
  * @param string serverurl
  * @param object clientoptions
  * @constructor
+ * @example
+ var clienturl = 'http://2x.dragonjsonserver.de/jsonrpc2.php';
+ var client = new DragonJsonServer.Client(clienturl);
+
+ var request = DragonJsonServer.Request('Application.ping');
+ client.send(request);
+
+ var requestA = DragonJsonServer.Request('Application.ping');
+ var requestB = DragonJsonServer.Request('Application.ping');
+ client.send([requestA, requestB]);
  */
 DragonJsonServer.Client = function (serverurl, clientoptions)
 {
@@ -51,23 +78,24 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     var clientoptions = clientoptions || {};
     var id = 0;
     var clientmessage = {
-        from: parseInt(new Date().getTime() / 1000),
-        callbacks: {}
+        from : parseInt(new Date().getTime() / 1000),
+        callbacks : {},
+        keyselection : false
     };
     var defaultparams = {};
 
-    var ajaxoptions = {url: serverurl};
+    var ajaxoptions = {url : serverurl};
     var stringify;
-    if (URI().domain() == URI(serverurl).domain()) {
+    if (URI().hostname() == URI(serverurl).hostname()) {
         $.extend(ajaxoptions, {
-            type: 'POST',
-            dataType: 'json'
+            type : 'POST',
+            dataType : 'json'
         });
         stringify = true;
     } else {
         $.extend(ajaxoptions, {
-            type: 'GET',
-            dataType: 'jsonp'
+            type : 'GET',
+            dataType : 'jsonp'
         });
         stringify = false;
     }
@@ -85,6 +113,51 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     };
 
     /**
+     * Setzt mehrere Callbackmethoden für Clientmessages
+     * @param object callbacks
+     * @return Client
+     */
+    this.setClientmessageCallbacks = function (callbacks)
+    {
+        var self = this;
+        $.each(callbacks, function (key, callback) {
+            self.setClientmessageCallback(key, callback);
+        });
+        return this;
+    };
+
+    /**
+     * Entfernt eine Callbackmethode für Clientmessages
+     * @param string key
+     * @return Client
+     */
+    this.removeClientmessageCallback = function (key)
+    {
+        delete clientmessage.callbacks[key];
+        return this;
+    };
+
+    /**
+     * Aktiviert die Keyauswahl für Clientmessages
+     * @return Client
+     */
+    this.enableClientmessageKeyselection = function ()
+    {
+        clientmessage.keyselection = true;
+        return this;
+    };
+
+    /**
+     * Deaktiviert die Keyauswahl für Clientmessages
+     * @return Client
+     */
+    this.enableClientmessageKeyselection = function ()
+    {
+        clientmessage.keyselection = false;
+        return this;
+    };
+
+    /**
      * Setzt einen Defaultparameter für jeden Request
      * @param string key
      * @param mixed value
@@ -93,6 +166,31 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
     this.setDefaultparam = function (key, value)
     {
         defaultparams[key] = value;
+        return this;
+    };
+
+    /**
+     * Setzt mehrere Defaultparameter für jeden Request
+     * @param object defaultparams
+     * @return Client
+     */
+    this.setDefaultparams = function (defaultparams)
+    {
+        var self = this;
+        $.each(defaultparams, function (key, value) {
+            self.setDefaultparam(key, value);
+        });
+        return this;
+    };
+
+    /**
+     * Entfernt einen Defaultparameter für jeden Request
+     * @param string key
+     * @return Client
+     */
+    this.removeDefaultparam = function (key)
+    {
+        delete defaultparams[key];
         return this;
     };
 
@@ -119,7 +217,13 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
             data = requests.toArray();
         }
         var to = parseInt(new Date().getTime() / 1000);
-        $.extend(data, {clientmessages: {from: clientmessage.from, to: to}});
+        var keys = Object.keys(clientmessage.callbacks);
+        if (keys.length) {
+            $.extend(data, {clientmessages : {from : clientmessage.from, to : to, keys : keys}});
+            if (clientmessage.keyselection) {
+                $.extend(data.clientmessages, {keys : keys});
+            }
+        }
         clientmessage.from = to;
         if (stringify) {
             data = JSON.stringify(data);
@@ -128,7 +232,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
             success: function (json, statusText, jqXHR) {
                 if (undefined != json.clientmessages) {
                     $.each(json.clientmessages, function (key, clientmessages) {
-                        $.each(clientmessages, function (index, json) {
+                        $.each(clientmessages, function (i, json) {
                             if (undefined != clientmessage.callbacks[key]) {
                                 clientmessage.callbacks[key](json);
                             }
@@ -139,7 +243,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                 if (undefined == json.responses) {
                     responses[json.id] = json;
                 } else {
-                    $.each(json.responses, function (index, response) {
+                    $.each(json.responses, function (i, response) {
                         responses[response.id] = response;
                     });
                 }
@@ -152,9 +256,11 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                         if (undefined != response.error) {
                             if (undefined != request.exception) {
                                 request.exception(response.error);
-                            } else if (undefined != sendoptions.exception) {
+                            }
+                            if (undefined != sendoptions.exception) {
                                 sendoptions.exception(response.error, request);
-                            } else if (undefined != clientoptions.exception) {
+                            }
+                            if (undefined != clientoptions.exception) {
                                 clientoptions.exception(response.error, request);
                             }
                         } else if (undefined != response.result) {
@@ -164,18 +270,20 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                 });
                 if (undefined != sendoptions.success) {
                     sendoptions.success(json, statusText, jqXHR, requests);
-                } else if (undefined != clientoptions.success) {
+                }
+                if (undefined != clientoptions.success) {
                     clientoptions.success(json, statusText, jqXHR, requests);
                 }
             },
             error: function (jqXHR, statusText, errorThrown) {
                 if (undefined != sendoptions.error) {
                     sendoptions.error(jqXHR, statusText, errorThrown, requests);
-                } else if (undefined != clientoptions.error) {
+                }
+                if (undefined != clientoptions.error) {
                     clientoptions.error(jqXHR, statusText, errorThrown, requests);
                 }
             },
-            exception: undefined,
+            exception : undefined
         }));
         return this;
     };
@@ -186,7 +294,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
      * @return Client
      */
     this.smd = function (sendoptions) {
-        $.ajax($.extend({}, ajaxoptions, {type: 'GET'}, clientoptions, sendoptions));
+        $.ajax($.extend({}, ajaxoptions, {type : 'GET'}, clientoptions, sendoptions));
         return this;
     }
 };
