@@ -21,6 +21,6 @@ return [
 			'%classname%' => '%namespace%', 
 			'%classname%' => '%namespace%', 
 	    ],
-	    'server' => '%server%',
+	    'serverurl' => '%serverurl%',
     ],
 ];
