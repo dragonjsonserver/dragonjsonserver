@@ -49,9 +49,9 @@ DragonJsonServer.Request = function (method, params, result, exception)
      */
     this.toArray = function () {
         return {
-            id: this.id,
-            method: this.method,
-            params: this.params
+            id : this.id,
+            method : this.method,
+            params : this.params
         };
     };
 };
