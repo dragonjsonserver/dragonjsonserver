@@ -263,7 +263,7 @@ DragonJsonServer.Client = function (serverurl, clientoptions)
                             if (undefined != clientoptions.exception) {
                                 clientoptions.exception(response.error, request);
                             }
-                        } else if (undefined != response.result) {
+                        } else if (undefined != request.result) {
                             request.result(response.result);
                         }
                     }
