@@ -21,6 +21,10 @@ class ClientFactory implements \Zend\ServiceManager\FactoryInterface
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
     {
-    	return new \DragonJsonServer\Service\Client($serviceLocator->get('Config')['dragonjsonserver']['serverurl']);
+        $serverurl = $serviceLocator->get('Config')['dragonjsonserver']['serverurl'];
+        if (is_array($serverurl)) {
+            $serverurl = $serverurl['http'];
+        }
+    	return new \DragonJsonServer\Service\Client($serverurl);
     }
 }

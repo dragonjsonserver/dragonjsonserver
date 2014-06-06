@@ -62,8 +62,8 @@ DragonJsonServer.Request = function (method, params, result, exception)
  * @param object clientoptions
  * @constructor
  * @example
- var clienturl = 'http://2x.dragonjsonserver.de/jsonrpc2.php';
- var client = new DragonJsonServer.Client(clienturl);
+ var serverurl = 'http://2x.dragonjsonserver.de/jsonrpc2.php';
+ var client = new DragonJsonServer.Client(serverurl);
 
  var request = DragonJsonServer.Request('Application.ping');
  client.send(request);
@@ -74,8 +74,14 @@ DragonJsonServer.Request = function (method, params, result, exception)
  */
 DragonJsonServer.Client = function (serverurl, clientoptions)
 {
-    var serverurl = serverurl;
-    var clientoptions = clientoptions || {};
+    if ($.isPlainObject(serverurl)) {
+        if (URI().scheme() == 'https') {
+            serverurl = serverurl.https;
+        } else {
+            serverurl = serverurl.http;
+        }
+    }
+    clientoptions = clientoptions || {};
     var id = 0;
     var clientmessage = {
         from : parseInt(new Date().getTime() / 1000),
