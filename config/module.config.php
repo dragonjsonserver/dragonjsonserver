@@ -10,6 +10,10 @@
 /**
  * @return array
  */
+$protocol = 'http';
+if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || $_SERVER['SERVER_PORT'] == '443') {
+    $protocol = 'https';
+}
 return [
 	'dragonjsonserver' => [
 	    'application' => [
@@ -21,7 +25,7 @@ return [
 	    'apiclasses' => [
 	        '\DragonJsonServer\Api\Application' => 'Application',
 	    ],
-	    'serverurl' => (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'jsonrpc2.php',
+	    'serverurl' => $protocol . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'jsonrpc2.php',
 	],
 	'service_manager' => [
 		'factories' => [
